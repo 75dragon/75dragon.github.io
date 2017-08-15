@@ -13,7 +13,7 @@
         font-weight: bold;
         color: rgba(152,251,152,.75);
         background-color: rgba(0,0,0,0.25);
-        margin:0 auto; <!-- This code centers the div element -->
+        margin:0 auto;
       }
 
       .flex-container {
@@ -28,16 +28,27 @@
           height: 100%;
           background-color: rgba(176,224,230,0.5);
       }
-
+      .flex-container button:hover {
+        background-color: rgba(0,121,235,0.5);
+      }
+      .flex-container button.active {
+        background-color: rgba(0,121,235,0.75);
+      }
       .flex-item {
           border: 1px solid black;
           background-color: rgba(0,191,255,0.5);
-          width: 150px;
+          width: 200px;
           height: 100%;
           margin: 10px;
           color:white;
           font-size: 30px;
           text-align: center;
+      }
+      .tabcontent {
+          display: none;
+          padding: 6px 12px;
+          border: 1px solid #ccc;
+          border-top: none;
       }
     </style>
   </head>
@@ -46,15 +57,64 @@
       Austin Cheng
     </div>
     <div class="flex-container">
-      <div class="flex-item">FireEmblem</div>
-      <div class="flex-item">Vast</div>
-      <div class="flex-item">Rainbow Snake</div>
-      <div class="flex-item">Best-Team</div>
-      <div class="flex-item">MarioLevel</div>
-      <div class="flex-item">TiltToTilt</div>
-      <div class="flex-item">youtube playlist mp3</div>
-      <div class="flex-item">website</div>
+      <button class="flex-item" onclick="openTab(event, 'FireEmblem')">FireEmblem</button>
+      <button class="flex-item" onclick="openTab(event, 'Vast')">Vast</button>
+      <button class="flex-item" onclick="openTab(event, 'RainbowSnake')">Rainbow Snake</button>
+      <button class="flex-item" onclick="openTab(event, 'BestTeam')">Best-Team</button>
+      <button class="flex-item" onclick="openTab(event, 'MarioLevel')">MarioLevel</button>
+      <button class="flex-item" onclick="openTab(event, 'TiltToTilt')">TiltToTilt</button>
+      <button class="flex-item" onclick="openTab(event, 'youtubeplaylistmp3')">youtube playlist mp3</button>
+      <button class="flex-item" onclick="openTab(event, 'website')">website</button>
     </div>
+    <div id="FireEmblem" class="tabcontent">
+      <h3>Fire Emblem</h3>
+      <p>My first hackathon at Foothill and an attempt to see how well I can replicate a complicated phone game.</p>
+    </div>
+    <div id="Vast" class="tabcontent">
+      <h3>Vast</h3>
+      <p>Once a high school senior final, made into a much bigger game!</p>
+    </div>
+    <div id="RainbowSnake" class="tabcontent">
+      <h3>Fire Emblem</h3>
+      <p>My first hackathon at Foothill and an attempt to see how well I can replicate a complicated phone game.</p>
+    </div>
+    <div id="BestTeam" class="tabcontent">
+      <h3>Vast</h3>
+      <p>Once a high school senior final, made into a much bigger game!</p>
+    </div>
+    <div id="MarioLevel" class="tabcontent">
+      <h3>Fire Emblem</h3>
+      <p>My first hackathon at Foothill and an attempt to see how well I can replicate a complicated phone game.</p>
+    </div>
+    <div id="TiltToTilt" class="tabcontent">
+      <h3>Vast</h3>
+      <p>Once a high school senior final, made into a much bigger game!</p>
+    </div>
+    <div id="youtubeplaylistmp3" class="tabcontent">
+      <h3>Fire Emblem</h3>
+      <p>My first hackathon at Foothill and an attempt to see how well I can replicate a complicated phone game.</p>
+    </div>
+    <div id="website" class="tabcontent">
+      <h3>Vast</h3>
+      <p>Once a high school senior final, made into a much bigger game!</p>
+    </div>
+
+
+    <script>
+      function openTab(evt, repoName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("flex-item");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(repoName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+    </script>
 
   </body>
 </html>
