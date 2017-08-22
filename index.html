@@ -80,8 +80,40 @@
         The first day was remembering how to structure the basics of the project - I ended up having a <br>
         grid of buttons and changed them when charectors moved around the map. Next, we needed to add heros into<br>
         the game and make them able to move across the map. After clicking on a tile with a hero, the 2ct true/false would <br>
-        tell you if the hero could access the tile or not.
+        tell you if the hero could access the tile or not. Then just press on the appropite button, and attack anything in <br>
+        your weapon's range (1-2 tiles away) and thats the end of your turn!<br>
+        <br>
+        After everyone was able to move and attack (and deal 0 damage), The map was the next obstical to work on. In the origional game <br>
+        there are preset maps, probably to add balance and make sure that none would give an unfair advantage. No smart coder want to do <br>
+        all those preset maps, So I decided to randomly generate them. Lite green are plains, dark green are forests and Grey represents mountains. <br>
+        this complicates movement, as players are divided into three main catagories and have different movement points on each type of terrain <br>
       </p>
+      <table style="width:300px">
+        <tr>
+          <th>Unit Type</th>
+          <th> Plains  </th>
+          <th> forest  </th>
+          <th>Mountain </th>
+        </tr>
+        <tr>
+          <td> Infantry </td>
+          <td>     1    </td>
+          <td>     2    </td>
+          <td>    N/A   </td>
+        </tr>
+        <tr>
+          <td>  Mounted </td>
+          <td>     1    </td>
+          <td>    N/A    </td>
+          <td>    N/A   </td>
+        </tr>
+        <tr>
+          <td>  Flying  </td>
+          <td>     1    </td>
+          <td>     1    </td>
+          <td>     1    </td>
+       </tr>
+      </table>
       <img src="images/FireEmblem.png" style="width:500px;height:507px;">
     </div>
     <div id="Vast" class="tabcontent">
