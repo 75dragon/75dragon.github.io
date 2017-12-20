@@ -10,6 +10,9 @@
   .dropdown-content{
     overflow: visible !important;
   }
+  .dropdown-content .dropdown-content {
+   margin-left: 100%;
+  }
   </style>
 
 
@@ -32,7 +35,7 @@
           </ul>
           </li>
           <!--<li class="divider"></li>-->
-          <li><a class='dropdown-button1' href='#' data-activates='dropdown3' data-hover="hover" data-alignment="left">Java Projects</a>
+          <li><a class='dropdown-button1' href='#' data-activates='dropdown3' data-hover="hover" data-alignment="left">Java</a>
           <ul id='dropdown3' class='dropdown-content'>
             <li><a href="#!">Racecar</a></li>
             <li><a href="#!">Civ Zero</a></li>
@@ -70,7 +73,9 @@
 
       </div>
     </div>
-    <div class="parallax"><img src="background1.jpg" alt="Unsplashed background img 1"></div>
+    <div class="parallax">
+      <img src="background1.jpg" alt="Unsplashed background img 1">
+    </div>
   </div>
 
 
@@ -202,7 +207,7 @@
       outDuration: 225,
       constrain_width: false, // Does not change width of dropdown to that of the activator
       hover: true, // Activate on hover
-      gutter: ($('.dropdown-content').width()), // Spacing from edge
+      //gutter: ($('.dropdown-content').width()), // Spacing from edge
       belowOrigin: false, // Displays dropdown below the button
   });
   </script>
