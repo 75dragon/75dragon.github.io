@@ -6,6 +6,13 @@
   <title>Parallax Template - Materialize</title>
 
   <!-- CSS  -->
+  <style>
+  .dropdown-content{
+    overflow: visible !important;
+  }
+  </style>
+
+
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
@@ -14,7 +21,27 @@
   <nav class="black" role="navigation">
     <div class="nav-wrapper container">
       <a id="logo-container" href="#" class="brand-logo">
-        projects
+        <a class='dropdown-button btn' href='#' data-activates='dropdown1' data-beloworigin="true">Projects</a>
+        <ul id='dropdown1' class='dropdown-content'>
+          <li><a class='dropdown-button1' href='#' data-activates='dropdown2' data-hover="hover" data-alignment="left">Starred</a>
+          <ul id='dropdown2' class='dropdown-content'>
+            <li><a href="#!">Vast</a></li>
+            <li><a href="#!">Website</a></li>
+            <li><a href="#!">Fire Emblem</a></li>
+            <li><a href="#!">Youtube playlist to MP3</a></li>
+          </ul>
+          </li>
+          <!--<li class="divider"></li>-->
+          <li><a class='dropdown-button1' href='#' data-activates='dropdown3' data-hover="hover" data-alignment="left">Java Projects</a>
+          <ul id='dropdown3' class='dropdown-content'>
+            <li><a href="#!">Racecar</a></li>
+            <li><a href="#!">Civ Zero</a></li>
+            <li><a href="#!">Euler problems</a></li>
+            <li><a href="#!">Mario level</a></li>
+          </ul>
+          </li>
+          <li><a href="#!">Numbers</a></li>
+        </ul>
         <!--<img src="DragonYinYang.jpg" alt="Ying Yang Dragon" style="width:70px;height:70px;">-->
       </a>
       <ul class="right hide-on-med-and-down">
@@ -165,8 +192,18 @@
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
   <script>
+  //to start beautify
   $(document).ready(function(){
   $('.parallax').parallax();
+  });
+  //for inner dropdown
+  $('.dropdown-button1').dropdown({
+      inDuration: 300,
+      outDuration: 225,
+      constrain_width: false, // Does not change width of dropdown to that of the activator
+      hover: true, // Activate on hover
+      gutter: ($('.dropdown-content').width()), // Spacing from edge
+      belowOrigin: false, // Displays dropdown below the button
   });
   </script>
 </html>
