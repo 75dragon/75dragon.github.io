@@ -11,9 +11,12 @@
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
-  <nav class="white" role="navigation">
+  <nav class="black" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">Logo</a>
+      <a id="logo-container" href="#" class="brand-logo">
+        projects
+        <!--<img src="DragonYinYang.jpg" alt="Ying Yang Dragon" style="width:70px;height:70px;">-->
+      </a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#">Navbar Link</a></li>
       </ul>
@@ -29,12 +32,12 @@
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="header center teal-text text-lighten-2">Parallax Template</h1>
+        <h1 class="header center teal-text text-lighten-2">Austin Cheng</h1>
         <div class="row center">
-          <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+          <h5 class="header col s12 light" font color="white">A computer program is only as amazing as its designer</h5>
         </div>
         <div class="row center">
-          <a href="http://materializecss.com/getting-started.html" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Get Started</a>
+          <a href="https://github.com/75dragon" id="GitHub-link" class="btn-large waves-effect waves-light teal lighten-1">GitHub</a>
         </div>
         <br><br>
 
@@ -89,7 +92,9 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="background2.jpg" alt="Unsplashed background img 2"></div>
+    <div class="parallax">
+      <img src="background2.jpg" alt="Unsplashed background img 2">
+    </div>
   </div>
 
   <div class="container">
@@ -159,6 +164,9 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
-
-  </body>
+  <script>
+  $(document).ready(function(){
+  $('.parallax').parallax();
+  });
+  </script>
 </html>
