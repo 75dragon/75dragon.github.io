@@ -14,15 +14,16 @@ deadPlayers = [];
 deadEnemies = [];
 deadPowerups = [];
 enemysKilled = 0;
-time = 0;
+lastUpdate = 0;
+nowUpdate = 0;
+gameStartTime = 0;
 
 spawnEnemyDelay = 0;
 spawnPowerUpDelay = 0;
-holdTime = 0;
 
 gameStart = false;
 gamePaused = false;
-gameRunning = false; //always true
+gameRunning = false;
 gameEnd = false;
 
 class Enemy
@@ -191,7 +192,7 @@ class Player
     this.x = x || 0;
     this.y = y || 0;
     this.radius = radius || 10;
-    this.speed = 5;
+    this.speed = .3;
     this.color = color || "rgb(255,0,0)";
     this.hp = hp || 10;
     this.velX = 0;
@@ -200,11 +201,11 @@ class Player
     this.immune = false;
   }
 
-  onTick(x, y)
+  onTick(deltaTime)
   {
     // get the target x and y
-    this.targetX = x;
-    this.targetY = y;
+    this.targetX = mX;
+    this.targetY = mY;
 
     // We need to get the distance this time around
     var tx = this.targetX - this.x,
@@ -217,8 +218,8 @@ class Player
      * this gives us a constant movement speed.
      */
 
-    this.velX = (tx / dist) * this.speed;
-    this.velY = (ty / dist) * this.speed;
+     this.velX = (tx / dist) * this.speed * deltaTime;
+     this.velY = (ty / dist) * this.speed * deltaTime;
 
     // Stop once we hit our target. This stops the jittery bouncing of the object.
     if (dist > this.radius / 2)
@@ -667,17 +668,8 @@ function spawnPowerUp()
   spawnPowerUpDelay = 0;
 }
 
-function worldTime()
-{
-  holdTime++;
-  if (holdTime >= 100)
-  {
-    time++;
-    holdTime = 0;
-  }
-}
 
-function onTimer()
+function onTimer(delta)
 {
   for (var i = 0; i < enemys.length; i++)
   {
@@ -690,11 +682,10 @@ function onTimer()
   }
   for (var i = 0; i < players.length; i++)
   {
-    players[i].onTick(mX, mY);
+    players[i].onTick(delta);
   }
   spawnEnemy();
   spawnPowerUp();
-  worldTime();
 }
 
 function startRender()
@@ -736,11 +727,9 @@ function resetGame()
   deadEnemies = [];
   deadPowerups = [];
   enemysKilled = 0;
-  time = 0;
 
   spawnEnemyDelay = 0;
   spawnPowerUpDelay = 0;
-  holdTime = 0;
 
   gameStart = false;
   gamePaused = false;
@@ -751,9 +740,13 @@ function resetGame()
 function render()
 {
   ctx.clearRect(0, 0, width, height);
+  var d = new Date();
+  nowUpdate = d.getTime();
+  deltaUpdate = nowUpdate - lastUpdate;
+  lastUpdate = nowUpdate;
   if (!gamePaused)
   {
-    onTimer();
+    onTimer(deltaUpdate);
     for (var i = 0; i < enemys.length; i++)
     {
       enemys[i].render();
@@ -772,7 +765,11 @@ function render()
 
     ctx.font = "30px Arial";
     ctx.fillText("Score: " + enemysKilled, width - 200, 100);
-    ctx.fillText("Time: " + Math.floor(time / 60) + ":" + ("0" + Math.floor(time % 60)).slice(-2), width - 200, 150);
+
+    rd = new Date();
+    rn = rd.getTime();
+
+    ctx.fillText("Time: " + Math.floor((this.rn - gameStartTime) / (1000 * 60)) + ":" + ("0" + Math.floor(((this.rn - gameStartTime) / (1000)) % 60)).slice(-2), width - 200, 150);
 
     while (deadPlayers.length > 0)
     {
@@ -817,6 +814,9 @@ function check(e)
     gameEnd = false;
     gameStart = false;
     gameRunning = true;
+    var d = new Date();
+    lastUpdate = d.getTime();
+    gameStartTime = d.getTime();
     render();
   }
   else if ( e.keyCode == 82  && gameEnd == true) // r
@@ -828,6 +828,9 @@ function check(e)
     resetGame();
     var player1 = new Player(width / 2, height / 2, 10, "rgb(0,0,0)", 1);
     players[0] = player1;
+    var d = new Date();
+    lastUpdate = d.getTime();
+    gameStartTime = d.getTime();
     render();
   }
 }
