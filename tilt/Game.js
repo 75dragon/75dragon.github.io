@@ -338,14 +338,8 @@ class PowerUp
       }
     }
     else if (this.awake == true && this.active == false)
-    { //second u hit
+    {
       this.active = true;
-      // var that = this;
-      // setTimeout(function()
-      // {
-      //   console.log("time is up!");
-      //   deadPowerups.push(that);
-      // }, 1000, this);
     }
     else if (this.awake == true && this.active == true)
     {
@@ -600,7 +594,6 @@ function removePlayer(dead)
   {
     console.log("GG");
     gameOver();
-    //gameRunning = false; //TODO
   }
 }
 
@@ -612,11 +605,6 @@ function removePowerup(dead)
 
 function spawnEnemy()
 {
-  if (spawnEnemyDelay < 10)
-  {
-    spawnEnemyDelay++;
-    return;
-  }
   xSpawnCoor = Math.floor(Math.random() * 2) * window.width;
   ySpawnCoor = Math.floor(Math.random() * 2) * window.height;
   spawnRadius = 10;
@@ -639,16 +627,10 @@ function spawnEnemy()
   {
     enemys[enemys.length] = new FollowEnemy(xSpawnCoor, ySpawnCoor, spawnRadius, spawnColor, spawnSpeed);
   }
-  spawnEnemyDelay = 0;
 }
 
 function spawnPowerUp()
 {
-  if (spawnPowerUpDelay < 25)
-  {
-    spawnPowerUpDelay++;
-    return;
-  }
   xPowerSpawnCoor = Math.floor(Math.random() * window.width) + 1;
   yPowerSpawnCoor = Math.floor(Math.random() * window.height) + 1;
   spawnType = Math.floor(Math.random() * 5);
@@ -672,9 +654,14 @@ function spawnPowerUp()
   {
     powerups[powerups.length] = new ExpandPowerUp(xPowerSpawnCoor, yPowerSpawnCoor);
   }
-  spawnPowerUpDelay = 0;
 }
 
+enemiesSpawned = 0;
+enemySpawnDelay = 250;
+enemySpawnDelta = 0;
+powerupsSpawned = 0;
+powerupsSpawnDelay = 250;
+powerupsSpawnDelta = 0;
 
 function onTimer(delta)
 {
@@ -691,8 +678,28 @@ function onTimer(delta)
   {
     players[i].onTick(delta);
   }
-  spawnEnemy();
-  spawnPowerUp();
+  enemySpawnDelta += delta;
+  if (enemySpawnDelta > enemySpawnDelay)
+  {
+    spawnEnemy();
+    enemiesSpawned += 1;
+    enemySpawnDelta -= enemySpawnDelay;
+  }
+  if (enemiesSpawned > 100)
+  {
+    enemySpawnDelay = 100;
+  }
+  if (enemiesSpawned > 200)
+  {
+    enemySpawnDelay = 25;
+  }
+  powerupsSpawnDelta += delta;
+  if (powerupsSpawnDelta > powerupsSpawnDelay)
+  {
+    spawnPowerUp();
+    powerupsSpawned += 1;
+    powerupsSpawnDelta -= powerupsSpawnDelay;
+  }
 }
 
 function startRender()
@@ -735,13 +742,17 @@ function resetGame()
   deadPowerups = [];
   enemysKilled = 0;
 
-  spawnEnemyDelay = 0;
-  spawnPowerUpDelay = 0;
-
   gameStart = false;
   gamePaused = false;
   gameRunning = true; //always true
   gameEnd = true;
+
+  enemiesSpawned = 0;
+  enemySpawnDelay = 250;
+  enemySpawnDelta = 0;
+  powerupsSpawned = 0;
+  powerupsSpawnDelay = 250;
+  powerupsSpawnDelta = 0;
 }
 
 function render()
