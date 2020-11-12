@@ -1,65 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Austin Cheng</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Parallax Template - Materialize</title>
 
   <!-- CSS  -->
-  <style>
-  .dropdown-content{
-    overflow: visible !important;
-  }
-  .dropdown-content .dropdown-content {
-   margin-left: 100%;
-  }
-  </style>
-
-
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection" />
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
+
 <body>
+
+  <ul id='dropdownStar' class='dropdown-content'>
+    <li><a href="https://github.com/75dragon/Vast">Vast</a></li>
+    <li><a href="https://75dragon.github.io">Website</a></li>
+    <li><a href="https://github.com/75dragon/download-youtube-playlist/">Youtube playlist to MP3</a></li>
+    <li><a href="https://github.com/75dragon/TiltToTilt">Tilt To Tilt</a></li>
+  </ul>
+
+  <ul id="dropdownLink" class="dropdown-content">
+    <li><a href="https://github.com/75dragon/">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/ache75/">Linkedin</a></li>
+  </ul>
+
   <nav class="black" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="#" class="brand-logo">
-        <a class='dropdown-button btn' href='#' data-activates='dropdown1' data-beloworigin="true">Projects</a>
-        <ul id='dropdown1' class='dropdown-content'>
-          <li><a class='dropdown-button1' href='#' data-activates='dropdown2' data-hover="hover" data-alignment="left">Starred</a>
-          <ul id='dropdown2' class='dropdown-content'>
-            <li><a href="https://github.com/75dragon/Vast">Vast</a></li>
-            <li><a href="https://75dragon.github.io">Website</a></li>
-            <li><a href="https://github.com/75dragon/download-youtube-playlist/">Youtube playlist to MP3</a></li>
-            <li><a href="https://github.com/75dragon/TiltToTilt">Tilt To Tilt</a></li>
-          </ul>
-          </li>
-          <!--<li class="divider"></li>-->
-          <li><a class='dropdown-button1' href='#' data-activates='dropdown3' data-hover="hover" data-alignment="left">Links</a>
-          <ul id='dropdown3' class='dropdown-content'>
-            <li><a href="https://github.com/75dragon/">GitHub</a></li>
-            <li><a href="https://www.linkedin.com/in/ache75/">Linkedin</a></li>
-          </ul>
-          </li>
-          <!-- <li><a class='dropdown-button1' href='#' data-activates='dropdown4' data-hover="hover" data-alignment="left">javascript</a>
-            <ul id='dropdown4' class='dropdown-content'>
-              <li><a href="https://github.com/75dragon/TiltToTilt">Game?</a></li>
-            </ul>
-          </li> -->
-        </ul>
-        <!--<img src="DragonYinYang.jpg" alt="Ying Yang Dragon" style="width:70px;height:70px;">-->
-      </a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="./tilt/GamePage.html">Game?</a></li>
+      <a id="logo-container" href="./tilt/GamePage.html" class="brand-logo">Game?</a>
+      <ul class="right">
+        <li>
+          <a class="dropdown-trigger" href="#!" data-target="dropdownLink">Links
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
+        <li>
+          <a class="dropdown-trigger" href="#!" data-target="dropdownStar">Projects
+            <i class="material-icons right">arrow_drop_down</i>
+          </a>
+        </li>
       </ul>
-
-      <ul id="nav-mobile" class="side-nav">
-        <li><a href="./tilt/GamePage.html">Game?</a></li>
-      </ul>
-      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
   </nav>
-
 
   <div id="index-banner" class="parallax-container">
     <div class="section no-pad-bot">
@@ -67,7 +50,7 @@
         <br><br>
         <h1 class="header center teal-text text-lighten-2">Austin Cheng</h1>
         <div class="row center">
-          <h5 class="header col s12 light" font color="white">My personal website! Found here are my projects, ideas, and creativity!</h5>
+          <h5 class="header col s12 light">Welcome to home!</h5>
         </div>
         <div class="row center">
           <a href="https://github.com/75dragon" id="GitHub-link" class="btn-large waves-effect waves-light teal lighten-1">GitHub</a>
@@ -76,9 +59,7 @@
 
       </div>
     </div>
-    <div class="parallax">
-      <img src="images/mini2.jpg" alt="Unsplashed background img 1">
-    </div>
+    <div class="parallax"><img src="images/mini2.jpg" alt="Unsplashed background img 1"></div>
   </div>
 
 
@@ -90,31 +71,34 @@
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center brown-text"><i class="material-icons">flash_on</i></h2>
-            <h5 class="center">Passionate Player</h5>
+            <h5 class="center">Passion</h5>
 
             <p class="light">Once I have a goal, I strive to complete it quickly and cleanly. From implementing new features to refactoring old code,
               I challenge myself to think about how readable and reusable it can be. Looking back at my old code and updating it has taught me a lot about myself I did not know.
             </p>
+
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center brown-text"><i class="material-icons">settings</i></h2>
-            <h5 class="center">Coding Camper</h5>
+            <h5 class="center">Programming</h5>
 
             <p class="light">I constantly find projects and puzzles to challenge myself on. Examples include a selenium script in Python that automatically
-            downloads a Youtube playlist into Mp3's for me to use later, a 2d Minecraft top down dungeon experience using Java, and this website!</p>
+              downloads a Youtube playlist into Mp3's for me to use later, a 2d Minecraft top down dungeon experience using Java, and this website!</p>
+
           </div>
         </div>
 
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center brown-text"><i class="material-icons">group</i></h2>
-            <h5 class="center">Fun Focused</h5>
+            <h5 class="center">Personality</h5>
 
             <p class="light">Love meeting new people that are open to talk about hobbies, carriers, and life. Feel free to send me an email at austinbicheng@gmail.com.
-            I hope we get to know each other ^_^</p>
+              I hope we get to know each other ^_^</p>
+
           </div>
         </div>
       </div>
@@ -122,25 +106,30 @@
     </div>
   </div>
 
-  <div class="carousel">
-      <a class="carousel-item" href="#one!"><img src="./images/catan1.jpg"></a>
-      <a class="carousel-item" href="#two!"><img src="./images/TiltToTilt1.png"></a>
-      <a class="carousel-item" href="#three!"><img src="./images/Vast1.png"></a>
-      <a class="carousel-item" href="#four!"><img src="./images/me1.jpg"></a>
-      <a class="carousel-item" href="#five!"><img src="./images/me2.jpg"></a>
+  <div class="container">
+    <div class="section">
+
+      <div class="carousel">
+        <a class="carousel-item" href="#one!"><img src="./images/catan1.jpg"></a>
+        <a class="carousel-item" href="#two!"><img src="./images/TiltToTilt1.png"></a>
+        <a class="carousel-item" href="#three!"><img src="./images/Vast1.png"></a>
+        <a class="carousel-item" href="#four!"><img src="./images/me1.jpg"></a>
+        <a class="carousel-item" href="#five!"><img src="./images/me2.jpg"></a>
+      </div>
+
+    </div>
   </div>
+
 
   <div class="parallax-container valign-wrapper">
     <div class="section no-pad-bot">
       <div class="container">
         <div class="row center">
-          <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
+          <h5 class="header col s12 light">Check out my GitHub and Linkedin to see what I am up to</h5>
         </div>
       </div>
     </div>
-    <div class="parallax">
-      <img src="images/purpleMountain.png" alt="Unsplashed background img 2">
-    </div>
+    <div class="parallax"><img src="images/purpleMountain.png" alt="Unsplashed background img 3"></div>
   </div>
 
   <footer class="page-footer teal">
@@ -153,16 +142,16 @@
         <div class="col l3 s12">
           <h5 class="white-text">Connect</h5>
           <ul>
-            <li><a class="white-text" href="https://github.com/75dragon/">Github</a></li>
-            <li><a class="white-text" href="https://www.linkedin.com/in/ache75/">Facebook</a></li>
-            <li><a class="white-text">austinbicheng@gmail.com</a></li>
+            <li><a class="link" href="https://github.com/75dragon/">Github</a></li>
+            <li><a class="link" href="https://www.linkedin.com/in/ache75/">Facebook</a></li>
+            <li><a class="white-text">email me at: austinbicheng@gmail.com</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made with <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        Made with <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
       </div>
     </div>
   </footer>
@@ -172,23 +161,7 @@
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/init.js"></script>
-  <script>
-  //to start beautify
-  $(document).ready(function(){
-  $('.parallax').parallax();
-  });
-  //for inner dropdown
-  $('.dropdown-button1').dropdown({
-      inDuration: 300,
-      outDuration: 225,
-      constrain_width: false, // Does not change width of dropdown to that of the activator
-      hover: true, // Activate on hover
-      //gutter: ($('.dropdown-content').width()), // Spacing from edge
-      belowOrigin: false, // Displays dropdown below the button
-  });
-  //for the carousel/spin images
-  $(document).ready(function(){
-      $('.carousel').carousel();
-    });
-  </script>
+
+</body>
+
 </html>
