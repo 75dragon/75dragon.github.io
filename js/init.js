@@ -1,6 +1,5 @@
 (function($){
   $(function(){
-    $('.sidenav').sidenav();
     $('.parallax').parallax();
     $(".dropdown-trigger").dropdown({hover: true, alignment: "left", constrainWidth: false});
     $(document).ready(function(){$('.carousel').carousel();
