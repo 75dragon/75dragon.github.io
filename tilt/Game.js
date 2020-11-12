@@ -33,7 +33,7 @@ class Enemy
     this.x = x || 0;
     this.y = y || 0;
     this.radius = radius || 10;
-    this.speed = speed || 3;
+    this.speed = speed || .2;
     this.color = color || "rgb(0,0,255)";
     this.velX = 0;
     this.velY = 0;
@@ -43,7 +43,7 @@ class Enemy
   AI() //override this
   {}
 
-  onTick()
+  onTick(deltaTime)
   {
     // get the target x and y from AI
     this.AI();
@@ -59,8 +59,8 @@ class Enemy
      * this gives us a constant movement speed.
      */
 
-    this.velX = (tx / dist) * this.speed;
-    this.velY = (ty / dist) * this.speed;
+    this.velX = (tx / dist) * this.speed * deltaTime;
+    this.velY = (ty / dist) * this.speed * deltaTime;
 
     // Stop once we hit our target. This stops the jittery bouncing of the object.
     // Basically only move when we are not there yet
@@ -315,14 +315,15 @@ class PowerUp
     this.color = "rgb(0,0,0)";
     this.awake = false;
     this.active = false;
+    this.duration = 1000;
   }
 
-  activeEffect()
+  activeEffect(deltaTime)
   {
 
   }
 
-  onTick()
+  onTick(deltaTime)
   {
     if (this.awake == false && this.active == false)
     { //didn't hit but spawned
@@ -339,16 +340,22 @@ class PowerUp
     else if (this.awake == true && this.active == false)
     { //second u hit
       this.active = true;
-      var that = this;
-      setTimeout(function()
-      {
-        console.log("time is up!");
-        deadPowerups.push(that);
-      }, 1000, this);
+      // var that = this;
+      // setTimeout(function()
+      // {
+      //   console.log("time is up!");
+      //   deadPowerups.push(that);
+      // }, 1000, this);
     }
     else if (this.awake == true && this.active == true)
     {
-      this.activeEffect()
+      this.activeEffect(deltaTime)
+      this.duration -= deltaTime;
+      if (this.duration < 0)
+      {
+        console.log(this.duration);
+        deadPowerups.push(this);
+      }
     }
   }
 
@@ -374,7 +381,7 @@ class PowerUp
 
   }
 
-  render()
+  render(deltaTime)
   {
     if (!this.active)
     {
@@ -382,7 +389,7 @@ class PowerUp
     }
     else
     {
-      this.activeRender()
+      this.activeRender(deltaTime)
     }
   }
 
@@ -414,7 +421,7 @@ class CirclePowerUp extends PowerUp
     super(x, y)
     this.circleRadius = 8;
   }
-  activeEffect()
+  activeEffect(deltaTime)
   {
     for (var i = 0; i < enemys.length; i++) //check if an enemy is a distance of 8 * radius or closer.
     {
@@ -426,7 +433,7 @@ class CirclePowerUp extends PowerUp
     }
   }
 
-  activeRender()
+  activeRender(deltaTime)
   {
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -443,7 +450,7 @@ class DiamondPowerUp extends PowerUp
     super(x, y)
     this.diamondRadius = 8;
   }
-  activeEffect()
+  activeEffect(deltaTime)
   {
     for (var i = 0; i < enemys.length; i++) //check if the enemys hits the diamond, size 8
     {
@@ -457,7 +464,7 @@ class DiamondPowerUp extends PowerUp
     }
   }
 
-  activeRender()
+  activeRender(delteTime)
   {
     ctx.fillStyle = this.color;
     ctx.beginPath()
@@ -482,7 +489,7 @@ class CrossPowerUp extends PowerUp
     super(x, y)
     this.crossRadius = 15;
   }
-  activeEffect()
+  activeEffect(deltaTime)
   {
     for (var i = 0; i < enemys.length; i++) //check if an enemy is vertical or horizontal, basically a + with width/height of radius * 15. Nerf!
     {
@@ -496,7 +503,7 @@ class CrossPowerUp extends PowerUp
     }
   }
 
-  activeRender()
+  activeRender(deltaTime)
   {
     ctx.fillStyle = this.color;
     ctx.fillRect(this.x - this.radius, this.y - this.radius * this.crossRadius, this.radius * 2, this.radius * this.crossRadius * 2);
@@ -512,7 +519,7 @@ class RingPowerUp extends PowerUp
     this.innerRadius = 9;
     this.outerRadius = 10;
   }
-  activeEffect()
+  activeEffect(deltaTime)
   {
     for (var i = 0; i < enemys.length; i++) //check if the enemys hits the ring of 9-10, if its inside it will live!
     {
@@ -526,7 +533,7 @@ class RingPowerUp extends PowerUp
     }
   }
 
-  activeRender()
+  activeRender(deltaTime)
   {
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -549,9 +556,9 @@ class ExpandPowerUp extends PowerUp
   {
     super(x, y)
     this.startRadius = 5;
-    this.expandRatio = .2;
+    this.expandRatio = .015;
   }
-  activeEffect()
+  activeEffect(deltaTime)
   {
     for (var i = 0; i < enemys.length; i++) //check if an enemy is a distance of 5 * radius or closer, but grows.
     {
@@ -563,14 +570,14 @@ class ExpandPowerUp extends PowerUp
     }
   }
 
-  activeRender()
+  activeRender(deltaTime)
   {
     ctx.fillStyle = this.color;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius * this.startRadius, 0, Math.PI * 2);
     ctx.closePath();
     ctx.fill();
-    this.radius += this.expandRatio;
+    this.radius += this.expandRatio * deltaTime;
   }
 }
 
@@ -614,7 +621,7 @@ function spawnEnemy()
   ySpawnCoor = Math.floor(Math.random() * 2) * window.height;
   spawnRadius = 10;
   spawnColor = "rgb(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ")";
-  spawnSpeed = 3;
+  spawnSpeed = .2;
   spawnAI = Math.floor(Math.random() * 10);
   if (spawnAI < 7)
   {
@@ -673,12 +680,12 @@ function onTimer(delta)
 {
   for (var i = 0; i < enemys.length; i++)
   {
-    enemys[i].onTick();
+    enemys[i].onTick(delta);
   }
 
   for (var i = 0; i < powerups.length; i++)
   {
-    powerups[i].onTick();
+    powerups[i].onTick(delta);
   }
   for (var i = 0; i < players.length; i++)
   {
@@ -754,7 +761,7 @@ function render()
 
     for (var i = 0; i < powerups.length; i++)
     {
-      powerups[i].render();
+      powerups[i].render(deltaUpdate);
     }
 
     for (var i = 0; i < players.length; i++)
