@@ -720,7 +720,8 @@ function endRender()
   ctx.textAlign = "center";
   ctx.fillText("Gave Over!", width/2, 100);
   ctx.fillText("Score: " + enemysKilled, width/2, 150);
-  ctx.fillText("Press R to restart", width/2, 200);
+  ctx.fillText("Press r to restart", width/2, 200);
+  ctx.fillText("Press h to visit my website", width/2, 250);
 }
 
 function gameOver()
@@ -850,6 +851,10 @@ function check(e)
     lastUpdate = d.getTime();
     gameStartTime = d.getTime();
     render();
+  }
+  else if ( e.keyCode == 72 && gameEnd == true ) // h
+  {
+    window.location = "../index.html";
   }
 }
 
