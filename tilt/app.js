@@ -58,7 +58,7 @@ saveButton.addEventListener("click", function()
         console.log("no exists, in else")
         docRef = firestore.collection("TiltToTilt").doc("highScores").collection("austin").doc("userInfo");
         console.log("saving" + textToSave);
-        userDoc.set(
+        docRef.set(
         {
           username: textToSave,
           highscore: 0
