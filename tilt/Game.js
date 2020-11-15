@@ -1,7 +1,7 @@
-canvas = document.getElementById("canvas");
+canvas = document.getElementById('canvas');
 ctx = canvas.getContext("2d");
-width = window.innerWidth;
-height = window.innerHeight;
+width = window.innerWidth * 0.8;
+height = window.innerHeight * 0.8;
 mX = width / 2;
 mY = height / 2;
 canvas.width = width;
@@ -25,6 +25,12 @@ gameStart = false;
 gamePaused = false;
 gameRunning = false;
 gameEnd = false;
+
+canvas.addEventListener("mousemove", function(e)
+{
+  mX = e.pageX - window.innerWidth * 0.1;
+  mY = e.pageY - window.innerHeight * 0.1;
+});
 
 class Enemy
 {
@@ -575,12 +581,6 @@ class ExpandPowerUp extends PowerUp
   }
 }
 
-canvas.addEventListener("mousemove", function(e)
-{
-  mX = e.pageX;
-  mY = e.pageY;
-});
-
 function removeEnemy(dead)
 {
   enemys.splice(enemys.indexOf(dead), 1);
@@ -710,7 +710,8 @@ function startRender()
   ctx.fillText("Welcome to TiltToTilt ", width/2, 100);
   ctx.fillText("Control a ship while avoiding the dots", width/2, 150);
   ctx.fillText("Hit diamond powerups to clear enemies", width/2, 200);
-  ctx.fillText("Press s to start", width/2, 250);
+  ctx.fillText("Save a username to keep track of score", width/2, 250);
+  ctx.fillText("Then press s to start", width/2, 300);
 }
 
 function endRender()
@@ -730,6 +731,7 @@ function gameOver()
   gamePaused = true;
   gameRunning = false; //always true
   gameEnd = true;
+  newScore(enemysKilled);
   render();
 }
 
@@ -827,7 +829,7 @@ window.addEventListener('keydown', this.check, false);
 
 function check(e)
 {
-  if (e.keyCode == 83 && gameStart == true) // s to start game
+  if (e.keyCode == 83 && gameStart == true && nameSaved) // s to start game
   {
     gamePaused = false;
     gameEnd = false;

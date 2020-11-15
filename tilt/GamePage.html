@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html>
+
+<head>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-analytics.js"></script>
+</head>
+
 <body>
-<canvas id="canvas" style="background:#eeeeee;
-               margin:0; padding:0;
-               position:absolute;
-               top:0; left:0"></canvas>
+  <canvas id="canvas" style="background:#eeeeee;
+position: absolute;
+top:0;
+bottom: 0;
+left: 0;
+right: 0;
+margin:auto;"></canvas>
+  <div style="text-align:center">
+    <p id="highscoreOutput">Current Global Highscore</p>
+    <input type="textfield" id="enterUsername" />
+    <button id="saveUsernameButton">Save Username</button>
+  </div>
 </body>
-<script src="Game.js"></script>
+<script src="./app.js"></script>
+<script src="./Game.js"></script>
 <script>
   main();
 </script>
+
 </html>
