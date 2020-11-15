@@ -84,6 +84,7 @@ function newScore(score)
   console.log("saving" + score);
   if (score > highestScore)
   {
+    highestScore = score;
     outputHeader.innerText = playerUsername + "'s highest score: " + score;
     docRef.update(
     {
