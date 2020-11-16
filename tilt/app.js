@@ -36,7 +36,7 @@ saveButton.addEventListener("click", function()
   nameSaved = true;
   if (textToSave != null && textToSave != "")
   {
-    docRef = firestore.collection("TiltToTilt").doc("highScores").collection(textToSave).doc("userInfo")
+    docRef = firestore.collection("TiltToTilt").doc("Users").collection(textToSave).doc("userInfo")
     console.log("infirsttrue")
     docRef.get().then(function(doc)
     {
@@ -56,7 +56,7 @@ saveButton.addEventListener("click", function()
       {
         playerUsername = textToSave;
         console.log("no exists, in else")
-        docRef = firestore.collection("TiltToTilt").doc("highScores").collection(textToSave).doc("userInfo");
+        docRef = firestore.collection("TiltToTilt").doc("Users").collection(textToSave).doc("userInfo");
         console.log("saving" + textToSave);
         docRef.set(
         {
@@ -79,11 +79,34 @@ saveButton.addEventListener("click", function()
   }
 })
 
+function saveHighScore(score)
+{
+  var globalRef = firestore.collection("TiltToTilt").doc("Global")
+  globalRef.get().then(function(doc)
+  {
+    if (doc && doc.exists)
+    {
+      console.log(doc)
+      console.log(doc.exists)
+      const myData = doc.data();
+      if (score > myData.HighScore)
+      {
+        globalRef.update({HighScore:score})
+      }
+    }
+  }).catch(function(error)
+  {
+    console.log("got an error", error);
+  })
+}
+
 function newScore(score)
 {
+  var docRef = firestore.collection("TiltToTilt").doc("Users").collection(playerUsername).doc("userInfo")
   console.log("saving" + score);
   if (score > highestScore)
   {
+    saveHighScore(score)
     highestScore = score;
     outputHeader.innerText = playerUsername + "'s highest score: " + score;
     docRef.update(
