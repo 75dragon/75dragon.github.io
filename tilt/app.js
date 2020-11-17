@@ -79,7 +79,7 @@ saveButton.addEventListener("click", function()
   }
 })
 
-function saveHighScore(score)
+function playerDeathCount()
 {
   var globalRef = firestore.collection("TiltToTilt").doc("Global")
   globalRef.get().then(function(doc)
@@ -89,7 +89,43 @@ function saveHighScore(score)
       console.log(doc)
       console.log(doc.exists)
       const myData = doc.data();
-      if (score > myData.HighScore)
+      globalRef.update({TotalPlayerDeaths:myData.TotalPlayerDeaths + 1})
+    }
+  }).catch(function(error)
+  {
+    console.log("got an error", error);
+  })
+}
+
+function enemyDeathCount(deaths)
+{
+  var globalRef = firestore.collection("TiltToTilt").doc("Global")
+  globalRef.get().then(function(doc)
+  {
+    if (doc && doc.exists)
+    {
+      console.log(doc)
+      console.log(doc.exists)
+      const myData = doc.data();
+      globalRef.update({TotalEnemyDeaths:myData.TotalPlayerDeaths + deaths})
+    }
+  }).catch(function(error)
+  {
+    console.log("got an error", error);
+  })
+}
+
+function saveHighScore(score)
+{
+  var globalRef = firestore.collection("TiltToTilt").doc("Global")
+  globalRef.get().then(function(doc)
+  {
+    if (doc && doc.exists)
+    {
+      console.log(doc)
+      console.log(doc.exists)
+      var preHighScore = doc.data();
+      if (score > preHighScore.HighScore)
       {
         globalRef.update({HighScore:score})
       }

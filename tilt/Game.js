@@ -589,6 +589,7 @@ function removeEnemy(dead)
 
 function removePlayer(dead)
 {
+  playerDeathCount();
   players.splice(players.indexOf(dead), 1);
   if (players.length <= 0)
   {
@@ -731,6 +732,7 @@ function gameOver()
   gamePaused = true;
   gameRunning = false; //always true
   gameEnd = true;
+  enemyDeathCount(enemysKilled);
   newScore(enemysKilled);
   render();
 }
