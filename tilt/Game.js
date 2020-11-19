@@ -708,7 +708,7 @@ function startRender()
   ctx.clearRect(0, 0, width, height);
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("Welcome to TiltToTilt ", width/2, 100);
+  ctx.fillText("Welcome to Tilt Arena ", width/2, 100);
   ctx.fillText("Control a ship while avoiding the dots", width/2, 150);
   ctx.fillText("Hit diamond powerups to clear enemies", width/2, 200);
   ctx.fillText("Save a username to keep track of score", width/2, 250);

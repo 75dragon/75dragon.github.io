@@ -15,11 +15,11 @@
 <body style="background-color: lightblue">
 
   <ul id='dropdownStar' class='dropdown-content'>
-    <li><a href="https://github.com/75dragon/Vast">Vast</a></li>
+    <li><a href="./Vast.html">Vast</a></li>
     <li><a href="https://75dragon.github.io">Website</a></li>
     <li><a href="https://github.com/75dragon/download-youtube-playlist/">Youtube playlist to MP3</a></li>
-    <li><a href="https://github.com/75dragon/TiltToTilt">Tilt To Tilt</a></li>
-    <li><a href="./tilt/GamePage.html">Play Tilt To Tilt</a></li>
+    <li><a href="./TiltArena.html">Tilt Arena</a></li>
+    <li><a href="./tilt/GamePage.html">Play Tilt Arena</a></li>
     <li><a href="https://github.com/75dragon/ShakespeareTextGenerator">Shakespeare Text Generator</a></li>
   </ul>
 
@@ -50,9 +50,9 @@
     <div class="section no-pad-bot">
       <div class="container">
         <br><br>
-        <h1 class="header center teal-text text-lighten-2">Vast</h1>
+        <h1 class="header center teal-text text-lighten-2">Tilt Arena</h1>
         <div class="row center">
-          <h5 class="header col s12 light" style="color:purple;">A Java Mining game!</h5>
+          <h5 class="header col s12 light" style="color:purple;">Avoid the bullets and survive as long as possible!</h5>
         </div>
         <div class="row center">
           <a href="https://github.com/75dragon" id="GitHub-link" class="btn-large waves-effect waves-light teal lighten-1">GitHub Repository</a>
@@ -68,30 +68,31 @@
     <div class="section">
       <div class="carousel carousel-slider center">
         <div class="carousel-item red white-text">
-          <img src="./images/Vast/Gameplay1.png" style="width:500px;height:500px;">
+          <img src="./images/Tilt/Arena1.png" style="width:700px;height:400px;">
         </div>
         <div class="carousel-item amber white-text">
-          <img src="./images/Vast/Start1.png" style="width:500px;height:500px;">
+          <img src="./images/Tilt/Start1.png" style="width:700px;height:400px;">
         </div>
         <div class="carousel-item green white-text">
-          <img src="./images/Vast/Gameplay2.png" style="width:500px;height:500px;">
+          <img src="./images/Tilt/Arena2.png" style="width:700px;height:400px;">
         </div>
         <div class="carousel-item blue white-text">
-          <img src="./images/Vast/End1.png" style="width:500px;height:500px;">
+          <img src="./images/Tilt/End1.png" style="width:700px;height:400px;">
         </div>
       </div>
     </div>
     <div class="section">
-      Built in APCS at Lynbrook High School, updated and cleaned throughout the years. <br>
+      Built with the intention to learn JavaScript and Canvas, added a Firebase NoSQL database to keep track of player data<br>
       Built With: <br>
-      -Java (Swing, Timer, Event, ImageIO, Color) <br>
+      -HTML, JavaScript (Canvas, Render & RequestAnimationFrame, KeyListeners), Firebase, NoSQL <br>
       Concepts: <br>
-      -Cellular automata in cave generation. <br>
-      -Dijkstra's algorithm for optimal AI pathing. <br>
-      -Data structures to hold map, items, enemies, etc. <br>
-      -Extends and Implements for various similar objects. <br>
-      -Multiple enemy AI's, weapons, pickups to find. <br>
-      Complied JAR located in the GitHub repository. <br>
+      -Firebase stores player data by name such as deaths, high score, etc. <br>
+      -Also stores global data such as plays, total deaths, total enemies killed, etc <br>
+      -Having a DeltaTime that keeps track of the time between frames<br>
+      ---DeltaTime is sent to all objects that move or have animation <br>
+      ---By using DeltaTime in calculations with animations, gameplay experience is the same even if there is a long time between frames<br>
+      -Extends for Bomb and Enemy objects <br>
+      -Multiple enemy AI's and Bomb types to use. <br>
     </div>
   </div>
 
