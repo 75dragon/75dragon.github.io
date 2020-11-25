@@ -1,12 +1,29 @@
 function ListWithLinks(props) {
-  const li = props.data;
-  const todoItems = li.map((li) =>
-  <li key={li.id}>
-    <a href={li.link}>
-    {li.text}
+  const listData = props.data;
+  const listItems = listData.map((listData) =>
+  <li key={listData.id}>
+    <a href={listData.link}>
+      {listData.text}
+    </a>
   </li>
-);
+  );
+  return (
+    <ul>{listItems}</ul>
+  );
 }
+
+const ListWithLinkData = [
+  {id:0, link:"./Vast.html", text:"Vast"},
+  {id:1, link:"https://75dragon.github.io", text:"Website"},
+  {id:2, link:"./YoutubeDownload.html", text:"Youtube playlist to MP3"},
+  {id:3, link:"./TiltArena.html", text:"Tilt Arena"},
+  {id:4, link:"./tilt/GamePage.html", text:"Play Tilt Arena"},
+  {id:5, link:"./Shakespeare.html", text:"Shakespeare Text Generator"}
+];
+ReactDOM.render(
+  <ListWithLinks data={ListWithLinkData} />,
+  document.getElementById('root')
+);
 
 class dropdownProjects extends React.Component {
   render() {
