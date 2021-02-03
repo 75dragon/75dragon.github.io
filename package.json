@@ -1,0 +1,24 @@
+{
+  "name": "75dragon.github.io",
+  "version": "1.0.0",
+  "description": "75dragon.github.io",
+  "main": "firestore.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/75dragon/75dragon.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/75dragon/75dragon.github.io/issues"
+  },
+  "homepage": "https://github.com/75dragon/75dragon.github.io#readme",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2"
+  }
+}
