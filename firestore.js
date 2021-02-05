@@ -12,6 +12,8 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+const analytics = firebase.analytics();
+
 
 var firestore = firebase.firestore();
 var nameSaved = false;
@@ -19,6 +21,7 @@ var nameSaved = false;
 function pageVisit()
 {
   var docRef = firestore.collection("webpage").doc("statistics")
+  firebase.analytics().logEvent('page_visit');
   docRef.get().then(function(doc)
   {
     if (doc && doc.exists)

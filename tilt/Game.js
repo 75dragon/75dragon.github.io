@@ -715,22 +715,35 @@ function startRender()
   ctx.fillText("Then press s to start", width/2, 300);
 }
 
+function pauseRender()
+{
+  ctx.fillStyle = "black";
+  ctx.globalAlpha = 0.4;
+  ctx.fillRect(0, 0, width, height);
+  ctx.globalAlpha = 1;
+  ctx.font = "30px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText("Game Paused!", width/2, 100);
+  ctx.fillText("P to unpause", width/2, 250);
+}
+
+
 function endRender()
 {
-  ctx.clearRect(0, 0, width, height);
+  //ctx.clearRect(0, 0, width, height);
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
   ctx.fillText("Gave Over!", width/2, 100);
   ctx.fillText("Score: " + enemysKilled, width/2, 150);
-  ctx.fillText("Press r to restart", width/2, 200);
-  ctx.fillText("Press h to visit my website", width/2, 250);
+  ctx.fillText("Press 'r' to restart", width/2, 200);
+  ctx.fillText("Press 'h' to visit my website", width/2, 250);
 }
 
 function gameOver()
 {
   gameStart = false;
-  gamePaused = true;
-  gameRunning = false; //always true
+  gamePaused = false;
+  gameRunning = false;
   gameEnd = true;
   enemyDeathCount(enemysKilled);
   newScore(enemysKilled);
@@ -749,7 +762,7 @@ function resetGame()
 
   gameStart = false;
   gamePaused = false;
-  gameRunning = true; //always true
+  gameRunning = false; //always true
   gameEnd = true;
 
   enemiesSpawned = 0;
@@ -762,13 +775,13 @@ function resetGame()
 
 function render()
 {
-  ctx.clearRect(0, 0, width, height);
   var d = new Date();
   nowUpdate = d.getTime();
   deltaUpdate = nowUpdate - lastUpdate;
   lastUpdate = nowUpdate;
-  if (!gamePaused)
+  if (gameRunning)
   {
+    ctx.clearRect(0, 0, width, height);
     onTimer(deltaUpdate);
     for (var i = 0; i < enemys.length; i++)
     {
@@ -820,7 +833,10 @@ function render()
   {
     startRender();
   }
-
+  else if (gamePaused)
+  {
+    pauseRender();
+  }
   if (gameRunning)
   {
     requestAnimationFrame(render);
@@ -854,11 +870,34 @@ function check(e)
     var d = new Date();
     lastUpdate = d.getTime();
     gameStartTime = d.getTime();
+    gameRunning = true;
     render();
   }
   else if ( e.keyCode == 72 && gameEnd == true ) // h
   {
     window.location = "../index.html";
+  }
+  else if ( e.keyCode == 80 && (gameRunning || gamePaused) ) // h
+  {
+    console.log("pausing");
+    if (gameRunning) //pause the game
+    {
+      gamePaused = true;
+      gameEnd = false;
+      gameStart = false;
+      gameRunning = false;
+      render();
+    }
+    else //unpause the game
+    {
+      var d = new Date();
+      lastUpdate = d.getTime();
+      gamePaused = false;
+      gameEnd = false;
+      gameStart = false;
+      gameRunning = true;
+      render();
+    }
   }
 }
 
@@ -871,7 +910,7 @@ function world()
 function main()
 {
   world();
-  gamePaused = true;
+  gamePaused = false;
   gameEnd = false;
   gameStart = true;
   gameRunning = false;
