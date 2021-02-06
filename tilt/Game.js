@@ -708,11 +708,12 @@ function startRender()
   ctx.clearRect(0, 0, width, height);
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("Welcome to Tilt Arena ", width/2, 100);
-  ctx.fillText("Control a ship while avoiding the dots", width/2, 150);
+  ctx.fillText("Welcome to Space Ace", width/2, 100);
+  ctx.fillText("Control a ship with the mouse while avoiding the dots", width/2, 150);
   ctx.fillText("Hit diamond powerups to clear enemies", width/2, 200);
-  ctx.fillText("Save a username to keep track of score", width/2, 250);
-  ctx.fillText("Then press s to start", width/2, 300);
+  ctx.fillText("Save a username above to keep track of score", width/2, 250);
+  ctx.fillText("Then press S to start", width/2, 300);
+  ctx.fillText("P to pause", width/2, 350);
 }
 
 function pauseRender()
@@ -730,10 +731,14 @@ function pauseRender()
 
 function endRender()
 {
-  //ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "white";
+  ctx.globalAlpha = 0.4;
+  ctx.fillRect(0, 0, width, height);
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = "black";
   ctx.font = "30px Arial";
   ctx.textAlign = "center";
-  ctx.fillText("Gave Over!", width/2, 100);
+  ctx.fillText("Game Over!", width/2, 100);
   ctx.fillText("Score: " + enemysKilled, width/2, 150);
   ctx.fillText("Press 'r' to restart", width/2, 200);
   ctx.fillText("Press 'h' to visit my website", width/2, 250);
