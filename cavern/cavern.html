@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="./cavern.css">
+</head>
+<body>
+  <div id="wrapper" class="wrap dark">
+
+    <div id="content" class="split text dark">
+      <div class="notification" style="opacity: 1;">Where am I?</div>
+    </div>
+
+    <div id="notifications" class="split main dark">
+      <div id="actions" class="split column one dark">
+        <div id="actionButtons" class="dark">
+          <button id="searchButton" class="buttons" onclick='search("searchButton", "Supplies, pray it is enough", 1000)' style="width: 80px;">look around</button>
+          <button id="stokeButton" class="buttons" onclick='search("stokeButton", "Light is good", 3000)' style="width: 80px;">stoke fire</button>
+        </div>
+      </div>
+
+      <div id="events" class="split column two dark">
+        <div id="eventButtons" class="dark">
+          <button id="exploreButton" class="buttons" onclick='search("exploreButton", "explore", 5000)' style="width: 80px;">explore</button>
+        </div>
+      </div>
+
+      <div id="items" class="split column three dark">
+        <div id="itemList" class="dark">
+          <div class="notification" style="opacity: 1;">Items</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+<script src="./cavern.js"></script>
+<script src="./timedEvents.js"></script>
+</html>

@@ -1,0 +1,49 @@
+.dark {
+  color: #AAAAAA;
+  background-color: #111111;
+}
+
+/* Split the screen in half */
+.split {
+  height: 100%;
+  position: fixed;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.column {
+  float: left;
+}
+
+.one {
+  left: 25%;
+  width: 25%;
+}
+
+.two {
+  left: 50%;
+  width: 25%;
+}
+
+.three {
+  left: 75%;
+  width: 25%;
+}
+/* Control the left side */
+.text {
+  left: 0;
+  width: 25%;
+}
+
+/* Control the right side */
+.main {
+  left: 25%;
+  width: 75%;
+}
+
+.buttons {
+  top: 0;
+  float: none;
+  display: block;
+}
