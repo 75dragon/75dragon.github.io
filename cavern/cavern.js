@@ -1,5 +1,24 @@
 items = new Map();
 
+function changeItem(itemName, amount)
+{
+  i = 0
+  while (i < itemName.lenght)
+  {
+    if (!items.has(itemName[i]) || items.get(itemName[i]) < amount[i])
+    {
+      return false
+    }
+    i += 1
+  }
+  i = 0
+  while (i < itemName.length)
+  {
+    items.set(itemName[i], items.get(itemName[i]) + amount[i])
+    i += 1
+  }
+}
+
 function sendEvent(text)
 {
   var div = document.createElement("div");
@@ -8,33 +27,7 @@ function sendEvent(text)
   document.getElementById("content").appendChild(div);
 }
 
-function search( eventButtonName, eventText, cooldownTime )
-{
-  if (eventButtonName == 'searchButton')
-  {
-    addItem("rock", Math.floor(Math.random() * 5))
-    addItem("wood", Math.floor(Math.random() * 3))
-    addItem("grass", Math.floor(Math.random() * 5))
-    addItem("stick", Math.floor(Math.random() * 5))
-  }
-  if (eventButtonName == 'stokeButton')
-  {
-    addItem("wood", 1)
-  }
-  if (eventButtonName == 'exploreButton')
-  {
-    addItem("stone", 1)
-  }
-  sendEvent(eventText);
-  console.log("ready? " + cooldownTime);
-  document.getElementById(eventButtonName).disabled = "true";
-  setTimeout(function() {
-    document.getElementById(eventButtonName).disabled = false;
-    console.log("finished? " + cooldownTime);
-  }, cooldownTime);
-}
-
-function addItem( itemName, amount )
+function addItem(itemName, amount)
 {
   if (items.has(itemName))
   {

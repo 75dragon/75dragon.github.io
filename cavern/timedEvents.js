@@ -1,14 +1,15 @@
 setTimeout(eventA, 2000);
 setTimeout(eventB, 4000);
+setTimeout(eventC, 4000);
 
 function eventA() {
-  sendEvent("Darkness.")
+  sendEvent("darkness")
 }
 
 function eventB() {
-  sendEvent("What happened?")
+  sendEvent("fatigue")
 }
 
-function eventB() {
-  sendEvent("Dizzy.")
+function eventC() {
+  sendEvent("dizzy")
 }
