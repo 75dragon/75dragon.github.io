@@ -29,31 +29,7 @@ function drawBoard()
 	board.draw(ctx)
 }
 
-function squareOccupied(col, row)
-{
-	return board.boardState[col + row * 8];
-}
-
-function getPeice(col, row)
-{
-	for (var i = 0; i < board.whitePieces.length; i++)
-	{
-		if( board.whitePieces[i].col == col && board.whitePieces[i].row == row )
-		{
-			return board.whitePieces[i];
-		}
-	}
-	for (var i = 0; i < board.blackPieces.length; i++)
-	{
-		if( board.blackPieces[i].col == col && board.blackPieces[i].row == row )
-		{
-			return board.blackPieces[i];
-		}
-	}
-	return;
-}
-
-var heldPeice = null;
+var heldPiece = null;
 
 function mouseDown( event )
 {
@@ -61,13 +37,13 @@ function mouseDown( event )
 	clickCol = Math.floor(event.pageX / tilesize);
 	clickRow = Math.floor(event.pageY / tilesize);
 	console.log(clickCol + " " + clickRow)
-	if (squareOccupied(clickCol, clickRow ))
+	if (board.squareOccupied(clickCol, clickRow ))
 	{
-		heldPeice = getPeice(clickCol, clickRow)
-		heldPeice.pixelCol = event.pageX;
-		heldPeice.pixelRow = event.pageY;
-		heldPeice.moving = true;
-		console.log("peice clicked")
+		heldPiece = board.getPiece(clickCol, clickRow)
+		heldPiece.pixelCol = event.pageX;
+		heldPiece.pixelRow = event.pageY;
+		heldPiece.moving = true;
+		console.log("Piece clicked")
 		dragging = true;
 	}
 }
@@ -77,8 +53,8 @@ function mouseMove( event )
 	if (dragging)
 	{
 		//console.log(event.pageX + " " + event.pageY);
-		heldPeice.pixelCol = event.pageX;
-		heldPeice.pixelRow = event.pageY;
+		heldPiece.pixelCol = event.pageX;
+		heldPiece.pixelRow = event.pageY;
 		drawBoard();
 	}
 }
@@ -90,9 +66,9 @@ function mouseUp( event )
 		dragging = false;
 		clickCol = Math.floor(event.pageX / tilesize);
 		clickRow = Math.floor(event.pageY / tilesize);
-		board.movePiece(heldPeice, clickCol, clickRow)
-		heldPeice.moving = false;
-		heldPeice = null;
+		board.movePiece(heldPiece, clickCol, clickRow)
+		heldPiece.moving = false;
+		heldPiece = null;
 	}
 	drawBoard();
 }

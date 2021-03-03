@@ -27,11 +27,62 @@ class Board {
 		}
 	}
 
+	squareOccupied(col, row)
+	{
+		return this.boardState[col + row * 8];
+	}
+
+	getPiece(col, row)
+	{
+		for (var i = 0; i < this.whitePieces.length; i++)
+		{
+			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
+			{
+				return this.whitePieces[i];
+			}
+		}
+		for (var i = 0; i < this.blackPieces.length; i++)
+		{
+			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
+			{
+				return this.blackPieces[i];
+			}
+		}
+		return;
+	}
+
+	removePiece(col, row)
+	{
+		for (var i = 0; i < this.whitePieces.length; i++)
+		{
+			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
+			{
+				this.whitePieces.splice(i, 1);
+				this.boardState[col + 8 * row] = false;
+				return;
+			}
+		}
+		for (var i = 0; i < this.blackPieces.length; i++)
+		{
+			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
+			{
+				this.blackPieces.splice(i, 1);
+				this.boardState[col + 8 * row] = false;
+				return;
+			}
+		}
+		return;
+	}
+
 	movePiece(p, col, row)
 	{
 		var previousCol = p.col;
 		var previousRow = p.row;
 		this.boardState[previousCol + 8 * previousRow] = false;
+		if (this.squareOccupied(col, row))
+		{
+			this.removePiece(col, row);
+		}
 		p.move(col, row);
 		this.boardState[col + 8 * row] = true;
 	}
