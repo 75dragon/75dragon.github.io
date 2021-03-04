@@ -15,6 +15,7 @@ class Piece
 		this.isWhite = isWhite;
 		this.type = type;
 		this.img = img;
+		this.hasNotMoved = true;
 	}
 
 	draw(ctx)
@@ -79,7 +80,7 @@ class Queen extends Piece
 		while (c >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -91,7 +92,7 @@ class Queen extends Piece
 		while (c >= 0 && r <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -104,7 +105,7 @@ class Queen extends Piece
 		while (r <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -116,7 +117,7 @@ class Queen extends Piece
 		while (c <= 7 && r <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -129,7 +130,7 @@ class Queen extends Piece
 		while (c <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -141,7 +142,7 @@ class Queen extends Piece
 		while (c <= 7 && r >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -154,7 +155,7 @@ class Queen extends Piece
 		while (r >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -166,7 +167,7 @@ class Queen extends Piece
 		while (c >= 0 && r >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -194,7 +195,7 @@ class Rook extends Piece
 		while (c >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -206,7 +207,7 @@ class Rook extends Piece
 		while (r <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -218,7 +219,7 @@ class Rook extends Piece
 		while (c <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -230,7 +231,7 @@ class Rook extends Piece
 		while (r >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -257,7 +258,7 @@ class Bishop extends Piece
 		while (c >= 0 && r <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -270,7 +271,7 @@ class Bishop extends Piece
 		while (c <= 7 && r <= 7 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -284,7 +285,7 @@ class Bishop extends Piece
 		while (c <= 7 && r >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -298,7 +299,7 @@ class Bishop extends Piece
 		while (c >= 0 && r >= 0 && (!board.squareOccupied(c, r) || (board.getPiece(c, r).isWhite != this.isWhite)))
 		{
 			moves[c + 8 * r] = true;
-			if (board.getPiece(c, r).isWhite != this.isWhite)
+			if (board.squareOccupied(c, r) && board.getPiece(c, r).isWhite != this.isWhite)
 			{
 				break;
 			}
@@ -343,7 +344,6 @@ class Pawn extends Piece
 	{
 		super(col, row, isWhite, "Pawn", img);
 		this.letter = "P";
-		this.hasNotMoved = true;
 	}
 
 	moves(board)
@@ -359,28 +359,24 @@ class Pawn extends Piece
 		if (r >= 0 && r <= 7 && !board.squareOccupied(c, r))
 		{
 			moves[c + 8 * r] = true;
-			this.hasNotMoved = false;
 		}
 		c = this.col;
 		r = this.row + direction * 2;
 		if (this.hasNotMoved && r >= 0 && r <= 7 && !board.squareOccupied(c, r))
 		{
 			moves[c + 8 * r] = true;
-			this.hasNotMoved = false;
 		}
 		c = this.col - 1;
 		r = this.row + direction;
 		if (c >= 0 && c <= 7 && r >= 0 && r <= 7 && board.squareOccupied(c, r) && (board.getPiece(c, r).isWhite != this.isWhite))
 		{
 			moves[c + 8 * r] = true;
-			this.hasNotMoved = false;
 		}
 		c = this.col + 1;
 		r = this.row + direction;
 		if (c >= 0 && c <= 7 && r >= 0 && r <= 7 && board.squareOccupied(c, r) && (board.getPiece(c, r).isWhite != this.isWhite))
 		{
 			moves[c + 8 * r] = true;
-			this.hasNotMoved = false;
 		}
 		return moves;
 	}

@@ -76,6 +76,19 @@ class Board {
 
 	movePiece(p, col, row)
 	{
+		var arr = p.moves(this);
+		if (arr[col + 8 * row])
+		{
+			console.log("legal move")
+			console.log(arr)
+			p.hasNotMoved = false;
+		}
+		else
+		{
+			console.log("illegal move")
+			console.log(arr)
+			return;
+		}
 		var previousCol = p.col;
 		var previousRow = p.row;
 		this.boardState[previousCol + 8 * previousRow] = false;
