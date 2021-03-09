@@ -29,11 +29,16 @@ class Piece
 	   		ctx.drawImage(this.img, 20 + this.col * 100 , 20 + this.row * 100);
 	    }
 	}
-	
+
 	move(col, row)
 	{
 		this.col = col;
 		this.row = row;
+	}
+
+	getSquare()
+	{
+		return this.col + 8 * this.row;
 	}
 }
 
@@ -43,6 +48,36 @@ class King extends Piece
 	{
 		super(col, row, isWhite, "King", img);
 		this.letter = "K";
+	}
+
+	attacks(board)
+	{
+		var moves = new Array(64).fill(false);
+		for (var c = 0; c < 8; c++)
+		{
+			for (var r = 0; r < 8; r++)
+			{
+				if (Math.abs(this.col - c) <= 1 && Math.abs(this.row - r) <= 1)
+				{
+					if (!(this.col - c == 0 && this.col - c == this.row - r))
+					{
+						moves[c + 8 * r] = true;
+					}
+				}
+			}
+		}
+		console.log("hello")
+		console.log("hello")
+		console.log("hello")
+		console.log("hello")
+		console.log("hello")
+		console.log(moves)
+		console.log("hello")
+		console.log("hello")
+		console.log("hello")
+		console.log("hello")
+		console.log("hello")
+		return moves;
 	}
 
 	moves(board)
@@ -59,6 +94,24 @@ class King extends Piece
 				}
 			}
 		}
+		//castle, king not in check and king has not moved
+		// if (this.hasNotMoved && !board.squareAttackedByEnemy(this.col + 8 * this.row))
+		// {
+		// 	//kingside
+		// 	//check if piece has not moved, thus is rook
+		// 	if (board.squareOccupied(7, this.row) && board.getPiece(7, this.row).isWhite == this.isWhite && board.getPiece(7, this.row).hasNotMoved)
+		// 	{
+		// 		//check if middle squares empty
+		// 		if (!(board.squareOccupied(5, this.row ) || board.squareOccupied(6, this.row)))
+		// 		{
+		// 			//check if squares attacked by enemy
+		// 			if(!board.squareAttackedByEnemy(6 + 8 * this.row, this.isWhite))
+		// 			{
+		// 				console.log("can castle")
+		// 			}
+		// 		}
+		// 	}
+		// }
 		return moves;
 	}
 }
@@ -69,6 +122,112 @@ class Queen extends Piece
 	{
 		super(col, row, isWhite, "Queen", img);
 		this.letter = "Q";
+	}
+
+	attacks(board)
+	{
+		var moves = new Array(64).fill(false);
+		var c = this.col - 1;
+		var r = this.row;
+		//go left
+		while (c >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c - 1
+		}
+		c = this.col - 1;
+		r = this.row + 1;
+		//go left down
+		while (c >= 0 && r <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c - 1;
+			r = r + 1;
+		}
+		c = this.col;
+		r = this.row + 1;
+		//go down
+		while (r <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			r = r + 1;
+		}
+		c = this.col + 1;
+		r = this.row + 1;
+		//go right down
+		while (c <= 7 && r <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c + 1;
+			r = r + 1;
+		}
+		c = this.col + 1;
+		r = this.row;
+		//go right
+		while (c <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c + 1
+		}
+		c = this.col + 1;
+		r = this.row - 1;
+		//go right up
+		while (c <= 7 && r >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c + 1
+			r = r - 1
+		}
+		c = this.col;
+		r = this.row - 1;
+		//go up
+		while (r >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			r = r - 1;
+		}
+		c = this.col - 1;
+		r = this.row - 1;
+		//go up left
+		while (c >= 0 && r >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c - 1
+			r = r - 1
+		}
+		return moves;
 	}
 
 	moves(board)
@@ -186,6 +345,60 @@ class Rook extends Piece
 		this.letter = "R";
 	}
 
+	attacks(board)
+	{
+		var moves = new Array(64).fill(false);
+		var c = this.col - 1;
+		var r = this.row;
+		//go left
+		while (c >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c - 1
+		}
+		c = this.col;
+		r = this.row + 1;
+		//go down
+		while (r <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			r = r + 1;
+		}
+		c = this.col + 1;
+		r = this.row;
+		//go right
+		while (c <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c + 1
+		}
+		c = this.col;
+		r = this.row - 1;
+		//go up
+		while (r >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			r = r - 1;
+		}
+		return moves;
+	}
+
 	moves(board)
 	{
 		var moves = new Array(64).fill(false);
@@ -247,6 +460,64 @@ class Bishop extends Piece
 	{
 		super(col, row, isWhite, "Bishop", img);
 		this.letter = "B";
+	}
+
+	attacks(board)
+	{
+		var moves = new Array(64).fill(false);
+		var c = this.col - 1;
+		var r = this.row + 1;
+		//go left down
+		while (c >= 0 && r <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c - 1;
+			r = r + 1;
+		}
+		c = this.col + 1;
+		r = this.row + 1;
+		//go right down
+		while (c <= 7 && r <= 7 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c + 1;
+			r = r + 1;
+		}
+		c = this.col + 1;
+		r = this.row - 1;
+		//go right up
+		while (c <= 7 && r >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c + 1
+			r = r - 1
+		}
+		c = this.col - 1;
+		r = this.row - 1;
+		//go up left
+		while (c >= 0 && r >= 0 )
+		{
+			moves[c + 8 * r] = true;
+			if (board.squareOccupied(c, r) )
+			{
+				break;
+			}
+			c = c - 1
+			r = r - 1
+		}
+		return moves;
 	}
 
 	moves(board)
@@ -315,7 +586,26 @@ class Knight extends Piece
 	constructor(col, row, isWhite, img)
 	{
 		super(col, row, isWhite, "Knight", img);
-		this.letter = "Kn";
+		this.letter = "N";
+	}
+
+	attacks(board)
+	{
+		var moves = new Array(64).fill(false);
+		var colArray = [1,1,2,2,-1,-1,-2,-2]
+		var rowArray = [2,-2,1,-1,2,-2,1,-1]
+		var c = 0;
+		var r = 0;
+		for (var i = 0; i < 8; i++)
+		{
+			c = this.col + colArray[i]
+			r = this.row + rowArray[i] 
+			if (c >= 0 && c <= 7 && r >= 0 && r <= 7)
+			{
+				moves[c + 8 * r] = true;
+			}
+		}
+		return moves;
 	}
 
 	moves(board)
@@ -344,6 +634,29 @@ class Pawn extends Piece
 	{
 		super(col, row, isWhite, "Pawn", img);
 		this.letter = "P";
+	}
+
+	attacks(board)
+	{
+		var moves = new Array(64).fill(false);
+		var direction = 1;
+		if (this.isWhite)
+		{
+			direction = -1;
+		}
+		var c = this.col - 1;
+		var r = this.row + direction;
+		if (c >= 0 && c <= 7 && r >= 0 && r <= 7)
+		{
+			moves[c + 8 * r] = true;
+		}
+		c = this.col + 1;
+		r = this.row + direction;
+		if (c >= 0 && c <= 7 && r >= 0 && r <= 7)
+		{
+			moves[c + 8 * r] = true;
+		}
+		return moves;
 	}
 
 	moves(board)

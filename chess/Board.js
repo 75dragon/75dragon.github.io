@@ -11,8 +11,92 @@ class Board {
 		this.pieceImages = [];
 		this.loadImages();
 		this.setBoard();
+		this.whitesTurn = true;
 	}
 
+	getKingSquare(isWhite)
+	{
+		if (!isWhite)
+		{
+			for (var i = 0; i < this.blackPieces.length; i++)
+			{
+				if (this.blackPieces[i].letter == "K")
+				{
+					return this.blackPieces[i].getSquare();
+				}
+			}
+		}
+		else
+		{
+			for (var i = 0; i < this.whitePieces.length; i++)
+			{
+				if( this.whitePieces[i].letter == "K")
+				{
+					return this.whitePieces[i].getSquare();
+				}
+			}
+		}
+	}
+
+	squareAttacked(square, isWhite)
+	{
+
+		if (isWhite)
+		{
+			for (var i = 0; i < this.whitePieces.length; i++)
+			{
+				if( this.whitePieces[i].moves(this)[square])
+				{
+					return true;
+				}
+			}
+		}
+		else
+		{
+			for (var i = 0; i < this.blackPieces.length; i++)
+			{
+				if (this.blackPieces[i].moves(this)[square])
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	squaresColorCanMoveTo(isWhite)
+	{
+		var moves = new Array(64).fill(false);
+		if (isWhite)
+		{
+			for (var i = 0; i < this.whitePieces.length; i++)
+			{
+				var hold = this.whitePieces[i].attacks(this)
+				for (var j = 0; j < hold.length; j++)
+				{
+					if (hold[j])
+					{
+						moves[j] = true;
+					}
+				}
+			}
+		}
+		else	
+		{
+			for (var i = 0; i < this.blackPieces.length; i++)
+			{
+				var hold = this.blackPieces[i].attacks(this)
+				for (var j = 0; j < hold.length; j++)
+				{
+					if (hold[j])
+					{
+						moves[j] = true;
+					}
+				}
+			}
+		}
+		
+		return moves;
+	}
 	placePiece(p)
 	{
 		if (p.isWhite)
@@ -77,6 +161,11 @@ class Board {
 	movePiece(p, col, row)
 	{
 		var arr = p.moves(this);
+		if (p.isWhite != this.whitesTurn)
+		{
+			console.log("wrong turn")
+			return;
+		}
 		if (arr[col + 8 * row])
 		{
 			console.log("legal move")
@@ -96,8 +185,26 @@ class Board {
 		{
 			this.removePiece(col, row);
 		}
+		if ( p.isWhite )
+		{
+			console.log("white move, check for black check")
+			if (this.squareAttacked(this.getKingSquare(true), true))
+			{
+				console.log("CHECK")
+			}
+		}
+		else
+		{
+			console.log("black move, check for black check")
+			if (this.squareAttacked(this.getKingSquare(false), false))
+			{
+				console.log("CHECK")
+			}
+		}
 		p.move(col, row);
 		this.boardState[col + 8 * row] = true;
+		//move sucess!
+		this.whitesTurn = !this.whitesTurn;
 	}
 
 	loadImages()
@@ -167,6 +274,20 @@ class Board {
 
 	draw(ctx) 
 	{
+		var hold = this.squaresColorCanMoveTo(this.whitesTurn)
+		ctx.globalAlpha = 0.7;
+		ctx.fillStyle = "green";
+		for (var row = 0; row < 8; row++)
+		{
+			for (var col = 0; col < 8; col++)
+			{
+				if ( hold[row + col * 8] )
+				{
+					ctx.fillRect(row * 100, col * 100, 100, 100);
+				}
+			}
+		}
+		ctx.globalAlpha = 1.0;
 		for (var i = 0; i < this.whitePieces.length; i++)
 		{
 			this.whitePieces[i].draw(ctx)
