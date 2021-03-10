@@ -66,17 +66,6 @@ class King extends Piece
 				}
 			}
 		}
-		console.log("hello")
-		console.log("hello")
-		console.log("hello")
-		console.log("hello")
-		console.log("hello")
-		console.log(moves)
-		console.log("hello")
-		console.log("hello")
-		console.log("hello")
-		console.log("hello")
-		console.log("hello")
 		return moves;
 	}
 

@@ -12,6 +12,44 @@ class Board {
 		this.loadImages();
 		this.setBoard();
 		this.whitesTurn = true;
+		this.moveLog = [];
+	}
+
+	colToChar(col)
+	{
+		if (col == 0)
+		{
+			return "a"
+		}
+		if (col == 1)
+		{
+			return "b"
+		}
+		if (col == 2)
+		{
+			return "c"
+		}
+		if (col == 3)
+		{
+			return "d"
+		}
+		if (col == 4)
+		{
+			return "e"
+		}
+		if (col == 5)
+		{
+			return "f"
+		}
+		if (col == 6)
+		{
+			return "g"
+		}
+		if (col == 7)
+		{
+			return "h"
+		}
+		return "error!"
 	}
 
 	getKingSquare(isWhite)
@@ -45,7 +83,7 @@ class Board {
 		{
 			for (var i = 0; i < this.whitePieces.length; i++)
 			{
-				if( this.whitePieces[i].moves(this)[square])
+				if( this.whitePieces[i].attacks(this)[square])
 				{
 					return true;
 				}
@@ -55,7 +93,7 @@ class Board {
 		{
 			for (var i = 0; i < this.blackPieces.length; i++)
 			{
-				if (this.blackPieces[i].moves(this)[square])
+				if (this.blackPieces[i].attacks(this)[square])
 				{
 					return true;
 				}
@@ -63,7 +101,7 @@ class Board {
 		}
 		return false;
 	}
-	squaresColorCanMoveTo(isWhite)
+	squaresColorAttacks(isWhite)
 	{
 		var moves = new Array(64).fill(false);
 		if (isWhite)
@@ -94,7 +132,6 @@ class Board {
 				}
 			}
 		}
-		
 		return moves;
 	}
 	placePiece(p)
@@ -137,29 +174,32 @@ class Board {
 
 	removePiece(col, row)
 	{
+		var hold = null;
 		for (var i = 0; i < this.whitePieces.length; i++)
 		{
 			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
 			{
-				this.whitePieces.splice(i, 1);
+				hold = this.whitePieces.splice(i, 1)[0];
 				this.boardState[col + 8 * row] = false;
-				return;
+				return hold;
 			}
 		}
 		for (var i = 0; i < this.blackPieces.length; i++)
 		{
 			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
 			{
-				this.blackPieces.splice(i, 1);
+				hold = this.blackPieces.splice(i, 1)[0];
 				this.boardState[col + 8 * row] = false;
-				return;
+				return hold;
 			}
 		}
-		return;
+		return hold;
 	}
 
 	movePiece(p, col, row)
 	{
+		console.log("----------------moveattempt------------")
+		var moveText = p.letter + this.colToChar(p.col) + (8 - p.row )
 		var arr = p.moves(this);
 		if (p.isWhite != this.whitesTurn)
 		{
@@ -169,41 +209,53 @@ class Board {
 		if (arr[col + 8 * row])
 		{
 			console.log("legal move")
-			console.log(arr)
+			//console.log(arr)
 			p.hasNotMoved = false;
 		}
 		else
 		{
 			console.log("illegal move")
-			console.log(arr)
+			//console.log(arr)
 			return;
 		}
+		//okay so the piece can move there
 		var previousCol = p.col;
 		var previousRow = p.row;
 		this.boardState[previousCol + 8 * previousRow] = false;
+		var ghostPiece;
 		if (this.squareOccupied(col, row))
 		{
-			this.removePiece(col, row);
+			ghostPiece = this.removePiece(col, row);
+			moveText = moveText + "x" + ghostPiece.letter + this.colToChar(col) + (8 - row)
 		}
-		if ( p.isWhite )
+		else
 		{
-			console.log("white move, check for black check")
-			if (this.squareAttacked(this.getKingSquare(true), true))
+			moveText = moveText + this.colToChar(col) + (8 - row)
+		}
+		p.move(col, row);
+		this.boardState[col + 8 * row] = true;
+		//move sucess!
+
+		//check for check
+		if ( this.whitesTurn )
+		{
+			console.log("white just moved, check for check")
+			if (this.squareAttacked(this.getKingSquare(false), true))
 			{
 				console.log("CHECK")
 			}
 		}
 		else
 		{
-			console.log("black move, check for black check")
-			if (this.squareAttacked(this.getKingSquare(false), false))
+			console.log("black just moved, check for check")
+			if (this.squareAttacked(this.getKingSquare(true), false))
 			{
 				console.log("CHECK")
 			}
 		}
-		p.move(col, row);
-		this.boardState[col + 8 * row] = true;
-		//move sucess!
+
+		console.log(moveText)
+		this.moveLog.push(moveText);
 		this.whitesTurn = !this.whitesTurn;
 	}
 
@@ -274,7 +326,7 @@ class Board {
 
 	draw(ctx) 
 	{
-		var hold = this.squaresColorCanMoveTo(this.whitesTurn)
+		var hold = this.squaresColorAttacks(this.whitesTurn)
 		ctx.globalAlpha = 0.7;
 		ctx.fillStyle = "green";
 		for (var row = 0; row < 8; row++)
