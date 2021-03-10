@@ -148,6 +148,58 @@ class Board {
 		}
 	}
 
+	castleQueenside(isWhite)
+	{
+		if (isWhite)
+		{
+			var rook = this.getPiece(0,7)
+			var king = this.getPiece(4,7)
+			this.boardState[rook.col + 8 * rook.row] = false;
+			this.boardState[king.col + 8 * king.row] = false;
+			rook.move(3, 7);
+			king.move(2, 7)
+			this.boardState[3, 7] = true;
+			this.boardState[2, 7] = true;
+		}
+		else
+		{
+			var rook = this.getPiece(0,0)
+			var king = this.getPiece(4,0)
+			this.boardState[rook.col + 8 * rook.row] = false;
+			this.boardState[king.col + 8 * king.row] = false;
+			rook.move(3, 0);
+			king.move(2, 0)
+			this.boardState[3, 0] = true;
+			this.boardState[2, 0] = true;
+		}
+	}
+
+	castleKingside(isWhite)
+	{
+		if (isWhite)
+		{
+			var rook = this.getPiece(7,7)
+			var king = this.getPiece(4,7)
+			this.boardState[rook.col + 8 * rook.row] = false;
+			this.boardState[king.col + 8 * king.row] = false;
+			rook.move(5, 7);
+			king.move(6, 7)
+			this.boardState[5, 7] = true;
+			this.boardState[6, 7] = true;
+		}
+		else
+		{
+			var rook = this.getPiece(7,0)
+			var king = this.getPiece(4,0)
+			this.boardState[rook.col + 8 * rook.row] = false;
+			this.boardState[king.col + 8 * king.row] = false;
+			rook.move(5, 0);
+			king.move(6, 0)
+			this.boardState[5, 0] = true;
+			this.boardState[6, 0] = true;
+		}
+	}
+
 	squareOccupied(col, row)
 	{
 		return this.boardState[col + row * 8];
@@ -207,7 +259,15 @@ class Board {
 			console.log("wrong turn")
 			return;
 		}
-		if (arr[col + 8 * row])
+		if (arr[col + 8 * row] == "CK")
+		{
+			this.castleKingside(this.whitesTurn);
+		}
+		else if (arr[col + 8 * row] == "CQ")
+		{
+			this.castleQueenside(this.whitesTurn);
+		}
+		else if (arr[col + 8 * row])
 		{
 			console.log("legal move")
 			//console.log(arr)

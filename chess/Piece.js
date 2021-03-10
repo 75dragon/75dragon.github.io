@@ -84,23 +84,38 @@ class King extends Piece
 			}
 		}
 		//castle, king not in check and king has not moved
-		// if (this.hasNotMoved && !board.squareAttackedByEnemy(this.col + 8 * this.row))
-		// {
-		// 	//kingside
-		// 	//check if piece has not moved, thus is rook
-		// 	if (board.squareOccupied(7, this.row) && board.getPiece(7, this.row).isWhite == this.isWhite && board.getPiece(7, this.row).hasNotMoved)
-		// 	{
-		// 		//check if middle squares empty
-		// 		if (!(board.squareOccupied(5, this.row ) || board.squareOccupied(6, this.row)))
-		// 		{
-		// 			//check if squares attacked by enemy
-		// 			if(!board.squareAttackedByEnemy(6 + 8 * this.row, this.isWhite))
-		// 			{
-		// 				console.log("can castle")
-		// 			}
-		// 		}
-		// 	}
-		// }
+		if (this.hasNotMoved && !board.squareAttacked(this.col + 8 * this.row, !this.isWhite))
+		{
+			//kingside
+			//check if piece has not moved, thus is rook
+			if (board.squareOccupied(7, this.row) && board.getPiece(7, this.row).isWhite == this.isWhite && board.getPiece(7, this.row).hasNotMoved)
+			{
+				//check if middle squares empty
+				if (!(board.squareOccupied(5, this.row ) || board.squareOccupied(6, this.row)))
+				{
+					//check if squares attacked by enemy
+					if(!board.squareAttacked(6 + 8 * this.row, !this.isWhite) && !board.squareAttacked(5 + 8 * this.row, !this.isWhite))
+					{
+						console.log("can castle kingside")
+						moves[6 + 8 * this.row] = "CK";
+					}
+				}
+			}
+			//queenside
+			if (board.squareOccupied(0, this.row) && board.getPiece(0, this.row).isWhite == this.isWhite && board.getPiece(0, this.row).hasNotMoved)
+			{
+				//check if middle squares empty
+				if (!(board.squareOccupied( 1, this.row ) || board.squareOccupied(2, this.row ) || board.squareOccupied(3, this.row)))
+				{
+					//check if squares attacked by enemy
+					if(!board.squareAttacked(2 + 8 * this.row, !this.isWhite) && !board.squareAttacked(3 + 8 * this.row, !this.isWhite))
+					{
+						console.log("can castle queenside")
+						moves[2 + 8 * this.row] = "CQ";
+					}
+				}
+			}
+		}
 		return moves;
 	}
 }
