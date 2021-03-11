@@ -52,6 +52,17 @@ class Board {
 		return "error!"
 	}
 
+	undoMove()
+	{
+		//should be the other color
+		//whites turn - undo blacks move
+		var lastMove = this.moveLog.pop()
+		if (whitesTurn)
+		{
+
+		}
+	}
+
 	getKingSquare(isWhite)
 	{
 		if (!isWhite)
@@ -101,6 +112,7 @@ class Board {
 		}
 		return false;
 	}
+
 	squaresColorAttacks(isWhite)
 	{
 		var moves = new Array(64).fill(false);
@@ -134,6 +146,7 @@ class Board {
 		}
 		return moves;
 	}
+
 	placePiece(p)
 	{
 		if (p.isWhite)
@@ -200,6 +213,61 @@ class Board {
 		}
 	}
 
+	enPassantRight(col, isWhite)
+	{
+		console.log("enpcall:" + col)
+		var hold = null;
+		if (isWhite)
+		{
+			var pawn = this.getPiece(col,3)
+			var pawnCaptured = this.getPiece(col + 1,3)
+			console.log("enpcall:" + col)
+			this.boardState[pawn.col + 8 * pawn.row] = false;
+			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
+			hold = this.removePiece(col + 1, 3);
+			pawn.move(col + 1, 2 );
+			this.boardState[col + 1, 2] = true;
+		}
+		else
+		{
+			console.log("enpcallb:" + col)
+			var pawn = this.getPiece(col,4)
+			var pawnCaptured = this.getPiece(col + 1,4)
+			this.boardState[pawn.col + 8 * pawn.row] = false;
+			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
+			hold = this.removePiece(col + 1, 4);
+			pawn.move(col + 1, 5 );
+			this.boardState[col + 1, 5] = true;
+		}
+		return hold
+	}
+
+	enPassantLeft(col, isWhite)
+	{
+		var hold = null;
+		if (isWhite)
+		{
+			var pawn = this.getPiece(col,3)
+			var pawnCaptured = this.getPiece(col - 1,3)
+			this.boardState[pawn.col + 8 * pawn.row] = false;
+			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
+			hold = this.removePiece(col - 1, 3);
+			pawn.move(col - 1, 2 );
+			this.boardState[col - 1, 2] = true;
+		}
+		else
+		{
+			var pawn = this.getPiece(col,4)
+			var pawnCaptured = this.getPiece(col - 1,4)
+			this.boardState[pawn.col + 8 * pawn.row] = false;
+			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
+			hold = this.removePiece(col - 1, 4);
+			pawn.move(col - 1, 5 );
+			this.boardState[col - 1, 5] = true;
+		}
+		return hold;
+	}
+
 	squareOccupied(col, row)
 	{
 		return this.boardState[col + row * 8];
@@ -259,13 +327,23 @@ class Board {
 			console.log("wrong turn")
 			return;
 		}
-		if (arr[col + 8 * row] == "CK")
+		if (arr[col + 8 * row] == "CastleKingside")
 		{
 			this.castleKingside(this.whitesTurn);
 		}
-		else if (arr[col + 8 * row] == "CQ")
+		else if (arr[col + 8 * row] == "CastleQueenside")
 		{
 			this.castleQueenside(this.whitesTurn);
+		}
+		else if (arr[col + 8 * row] == "En Passant Right")
+		{
+			console.log("enPassantRight")
+			this.enPassantRight(col - 1, this.whitesTurn)
+		}
+		else if (arr[col + 8 * row] == "En Passant Left")
+		{
+			console.log("enPassantLeft")
+			this.enPassantLeft(col + 1, this.whitesTurn)
 		}
 		else if (arr[col + 8 * row])
 		{
@@ -354,6 +432,7 @@ class Board {
 
 		console.log(moveText)
 		this.moveLog.push(moveText);
+		console.log(this.moveLog)
 		this.whitesTurn = !this.whitesTurn;
 	}
 

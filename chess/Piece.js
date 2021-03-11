@@ -97,7 +97,7 @@ class King extends Piece
 					if(!board.squareAttacked(6 + 8 * this.row, !this.isWhite) && !board.squareAttacked(5 + 8 * this.row, !this.isWhite))
 					{
 						console.log("can castle kingside")
-						moves[6 + 8 * this.row] = "CK";
+						moves[6 + 8 * this.row] = "CastleKingside";
 					}
 				}
 			}
@@ -111,7 +111,7 @@ class King extends Piece
 					if(!board.squareAttacked(2 + 8 * this.row, !this.isWhite) && !board.squareAttacked(3 + 8 * this.row, !this.isWhite))
 					{
 						console.log("can castle queenside")
-						moves[2 + 8 * this.row] = "CQ";
+						moves[2 + 8 * this.row] = "CastleQueenside";
 					}
 				}
 			}
@@ -695,6 +695,42 @@ class Pawn extends Piece
 		{
 			moves[c + 8 * r] = true;
 		}
+
+		//enpassant
+		if (this.isWhite)
+		{
+			console.log("en passant opportunity attempt")
+			//right side
+			//check if right col exists, is right row, pawn enemy color next to it, space behind is clear
+			if (this.col < 7 && this.row == 3 && board.squareOccupied(this.col + 1, this.row) && board.getPiece(this.col + 1, this.row).letter == "P" && board.getPiece(this.col + 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col + 1, this.row - 1))
+			{
+				console.log("en passant opportunity right")
+				moves[this.col + 1 + 8 * (this.row - 1)] = "En Passant Right"
+			}
+			//right side
+			//check if right col exists, is right row, pawn enemy color next to it, space behind is clear
+			if (this.col > 0 && this.row == 3 && board.squareOccupied(this.col - 1, this.row) && board.getPiece(this.col - 1, this.row).letter == "P" && board.getPiece(this.col - 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col - 1, this.row - 1))
+			{
+				console.log("en passant opportunity left")
+				moves[this.col - 1 + 8 * (this.row - 1)] = "En Passant Left"
+			}
+		}
+		else
+		{
+			//right side
+			//check if right col exists, is right row, pawn enemy color next to it, space behind is clear
+			if (this.col < 7 && this.row == 4 && board.squareOccupied(this.col + 1, this.row) && board.getPiece(this.col + 1, this.row).letter == "P" && board.getPiece(this.col + 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col + 1, this.row + 1))
+			{
+				moves[this.col + 1 + 8 * (this.row + 1)] = "En Passant Right"
+			}
+			//right side
+			//check if right col exists, is right row, pawn enemy color next to it, space behind is clear
+			if (this.col > 0 && this.row == 4 && board.squareOccupied(this.col - 1, this.row) && board.getPiece(this.col - 1, this.row).letter == "P" && board.getPiece(this.col - 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col - 1, this.row + 1))
+			{
+				moves[this.col - 1 + 8 * (this.row + 1)] = "En Passant Left"
+			}
+		}
+
 		return moves;
 	}
 }
