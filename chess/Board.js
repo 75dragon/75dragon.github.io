@@ -161,29 +161,28 @@ class Board {
 		}
 	}
 
+	movePiece(p, col, row)
+	{
+		this.boardState[p.col + p.row * 8] = false;
+		p.move(col, row)
+		this.boardState[col + 8 * row] = true;
+	}
+
 	castleQueenside(isWhite)
 	{
 		if (isWhite)
 		{
 			var rook = this.getPiece(0,7)
 			var king = this.getPiece(4,7)
-			this.boardState[rook.col + 8 * rook.row] = false;
-			this.boardState[king.col + 8 * king.row] = false;
-			rook.move(3, 7);
-			king.move(2, 7)
-			this.boardState[3, 7] = true;
-			this.boardState[2, 7] = true;
+			this.movePiece(rook, 3, 7)
+			this.movePiece(king, 2, 7)
 		}
 		else
 		{
 			var rook = this.getPiece(0,0)
 			var king = this.getPiece(4,0)
-			this.boardState[rook.col + 8 * rook.row] = false;
-			this.boardState[king.col + 8 * king.row] = false;
-			rook.move(3, 0);
-			king.move(2, 0)
-			this.boardState[3, 0] = true;
-			this.boardState[2, 0] = true;
+			this.movePiece(rook, 3, 0)
+			this.movePiece(king, 2, 0)
 		}
 	}
 
@@ -240,6 +239,28 @@ class Board {
 			this.boardState[col + 1, 5] = true;
 		}
 		return hold
+	}
+
+	undoEnPassantRight(col, isWhite, capturedPawn)
+	{
+		console.log("reverseEnPassant" + col)
+		var hold = null;
+		if (isWhite)
+		{
+			var pawn = this.getPiece(col + 1, 2)
+			this.boardState[col + 1, 2] = false;
+			pawn.move(col , 3);
+			this.placePiece(capturedPawn)
+			this.boardState[col, 3] = true;
+		}
+		else
+		{
+			var pawn = this.getPiece(col + 1, 5)
+			this.boardState[col + 1, 5] = false;
+			pawn.move(col , 4);
+			this.placePiece(capturedPawn)
+			this.boardState[col, 4] = true;
+		}
 	}
 
 	enPassantLeft(col, isWhite)
@@ -316,7 +337,7 @@ class Board {
 		return hold;
 	}
 
-	movePiece(p, col, row)
+	attemptMove(p, col, row)
 	{
 		console.log("----------------moveattempt------------")
 		var moveText = p.letter + this.colToChar(p.col) + (8 - p.row )
@@ -349,7 +370,6 @@ class Board {
 		{
 			console.log("legal move")
 			//console.log(arr)
-			p.hasNotMoved = false;
 		}
 		else
 		{
@@ -433,6 +453,7 @@ class Board {
 		console.log(moveText)
 		this.moveLog.push(moveText);
 		console.log(this.moveLog)
+		p.hasNotMoved = false;
 		this.whitesTurn = !this.whitesTurn;
 	}
 

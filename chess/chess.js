@@ -66,7 +66,7 @@ function mouseUp( event )
 		dragging = false;
 		clickCol = Math.floor(event.pageX / tilesize);
 		clickRow = Math.floor(event.pageY / tilesize);
-		board.movePiece(heldPiece, clickCol, clickRow)
+		board.attemptMove(heldPiece, clickCol, clickRow)
 		heldPiece.moving = false;
 		heldPiece = null;
 	}
