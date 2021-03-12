@@ -163,9 +163,16 @@ class Board {
 
 	movePiece(p, col, row)
 	{
+		//move piece, if no piece then return null
+		var removedPiece = null;
+		if (this.boardState[col + 8 * row])
+		{
+			removedPiece = this.removePiece(col, row);
+		}
 		this.boardState[p.col + p.row * 8] = false;
-		p.move(col, row)
+		p.move(col, row);
 		this.boardState[col + 8 * row] = true;
+		return removedPiece;
 	}
 
 
@@ -276,18 +283,14 @@ class Board {
 		if (isWhite)
 		{
 			var pawn = this.getPiece(col + 1, 2)
-			this.boardState[col + 1, 2] = false;
-			pawn.move(col , 3);
+			this.movePiece(pawn, col, 3)
 			this.placePiece(capturedPawn)
-			this.boardState[col, 3] = true;
 		}
 		else
 		{
 			var pawn = this.getPiece(col + 1, 5)
-			this.boardState[col + 1, 5] = false;
-			pawn.move(col , 4);
+			this.movePiece(pawn, col, 4)
 			this.placePiece(capturedPawn)
-			this.boardState[col, 4] = true;
 		}
 	}
 
@@ -319,7 +322,10 @@ class Board {
 		console.log("----------------moveattempt------------")
 		var moveText = p.letter + this.colToChar(p.col) + (8 - p.row )
 		var arr = p.moves(this);
-		var capture = false
+		var capture = false;
+		var previousCol = p.col;
+		var previousRow = p.row;
+
 		if (p.isWhite != this.whitesTurn)
 		{
 			console.log("wrong turn")
@@ -328,20 +334,24 @@ class Board {
 		if (arr[col + 8 * row] == "CastleKingside")
 		{
 			this.castleKingside(this.whitesTurn);
+			return;
 		}
 		else if (arr[col + 8 * row] == "CastleQueenside")
 		{
 			this.castleQueenside(this.whitesTurn);
+			return;
 		}
 		else if (arr[col + 8 * row] == "En Passant Right")
 		{
 			console.log("enPassantRight")
 			this.enPassantRight(col - 1, this.whitesTurn)
+			return;
 		}
 		else if (arr[col + 8 * row] == "En Passant Left")
 		{
 			console.log("enPassantLeft")
 			this.enPassantLeft(col + 1, this.whitesTurn)
+			return;
 		}
 		else if (arr[col + 8 * row])
 		{
@@ -354,60 +364,109 @@ class Board {
 			//console.log(arr)
 			return;
 		}
-		//okay so the piece can move there
-		var previousCol = p.col;
-		var previousRow = p.row;
-		this.boardState[previousCol + 8 * previousRow] = false;
-		var ghostPiece;
-		if (this.squareOccupied(col, row))
+
+
+
+
+		var capturedPiece = this.movePiece(p, col, row);
+		if (capturedPiece == null) //no piece captured
 		{
-			capture = true
-			ghostPiece = this.removePiece(col, row);
-			moveText = moveText + "x" + ghostPiece.letter + this.colToChar(col) + (8 - row)
+			console.log("no piece captured.");
+			moveText = moveText + this.colToChar(col) + (8 - row);
 		}
 		else
 		{
-			moveText = moveText + this.colToChar(col) + (8 - row)
+			capture = true;
+			console.log("piece captured!")
+			moveText = moveText + "x" + capturedPiece.letter + this.colToChar(col) + (8 - row);
 		}
-		p.move(col, row);
-		this.boardState[col + 8 * row] = true;
-		//move sucess!
-		//check if move leavs king in check
-		if ( this.whitesTurn )
+		if (this.whitesTurn)
 		{
-			console.log("check if white king in check")
+			console.log("check if white king would be in check");
 			if (this.squareAttacked(this.getKingSquare(true), false))
 			{
-				console.log("still in check, move failed")
-				console.log(moveText + " has failed, white king still in check")
-				p.move(previousCol, previousRow)
-				this.boardState[previousCol + 8 * previousRow] = true;
-				this.boardState[col + 8 * row] = false;
+				console.log("move illegal, left white king in check");
+				this.movePiece(p, previousCol, previousRow);
 				if (capture)
 				{
-					this.placePiece(ghostPiece)
+					console.log("replace piece that would have been captured");
+					this.placePiece(capturedPiece)
 				}
-				this.placePiece(ghostPiece)
-				return
-			}
-		}
-		else
-		{
-			console.log("check if black king in check")
-			if (this.squareAttacked(this.getKingSquare(false), true))
-			{
-				console.log("still in check, move failed")
-				console.log(moveText + " has failed, black king still in check")
-				p.move(previousCol, previousRow)
-				this.boardState[previousCol + 8 * previousRow] = true;
-				this.boardState[col + 8 * row] = false;
-				if (capture)
-				{
-					this.placePiece(ghostPiece)
-				}
+				console.log("board reset, whites turn");
 				return;
 			}
 		}
+		else
+		{
+			console.log("check if black king would be in check")
+			if (this.squareAttacked(this.getKingSquare(false), true))
+			{
+				console.log("move illegal, left black king in check");
+				this.movePiece(p, previousCol, previousRow);
+				if (capture)
+				{
+					console.log("replace piece that would have been captured");
+					this.placePiece(capturedPiece)
+				}
+				console.log("board reset, blacks turn");
+				return;
+			}
+		}
+
+
+
+
+		// //okay so the piece can move there
+		// this.boardState[previousCol + 8 * previousRow] = false;
+		// var ghostPiece;
+		// if (this.squareOccupied(col, row))
+		// {
+		// 	capture = true
+		// 	ghostPiece = this.removePiece(col, row);
+		// 	moveText = moveText + "x" + ghostPiece.letter + this.colToChar(col) + (8 - row)
+		// }
+		// else
+		// {
+		// 	moveText = moveText + this.colToChar(col) + (8 - row)
+		// }
+		// p.move(col, row);
+		// this.boardState[col + 8 * row] = true;
+		// //move sucess!
+		// //check if move leavs king in check
+		// if ( this.whitesTurn )
+		// {
+		// 	console.log("check if white king in check")
+		// 	if (this.squareAttacked(this.getKingSquare(true), false))
+		// 	{
+		// 		console.log("still in check, move failed")
+		// 		console.log(moveText + " has failed, white king still in check")
+		// 		p.move(previousCol, previousRow)
+		// 		this.boardState[previousCol + 8 * previousRow] = true;
+		// 		this.boardState[col + 8 * row] = false;
+		// 		if (capture)
+		// 		{
+		// 			this.placePiece(ghostPiece)
+		// 		}
+		// 		return
+		// 	}
+		// }
+		// else
+		// {
+		// 	console.log("check if black king in check")
+		// 	if (this.squareAttacked(this.getKingSquare(false), true))
+		// 	{
+		// 		console.log("still in check, move failed")
+		// 		console.log(moveText + " has failed, black king still in check")
+		// 		p.move(previousCol, previousRow)
+		// 		this.boardState[previousCol + 8 * previousRow] = true;
+		// 		this.boardState[col + 8 * row] = false;
+		// 		if (capture)
+		// 		{
+		// 			this.placePiece(ghostPiece)
+		// 		}
+		// 		return;
+		// 	}
+		// }
 
 		//check for check
 		if ( this.whitesTurn )
