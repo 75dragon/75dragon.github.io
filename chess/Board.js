@@ -168,6 +168,52 @@ class Board {
 		this.boardState[col + 8 * row] = true;
 	}
 
+
+	getPiece(col, row)
+	{
+		for (var i = 0; i < this.whitePieces.length; i++)
+		{
+			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
+			{
+				return this.whitePieces[i];
+			}
+		}
+		for (var i = 0; i < this.blackPieces.length; i++)
+		{
+			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
+			{
+				return this.blackPieces[i];
+			}
+		}
+		console.log("failed to get a piece at c: " + col + " r: " + row);
+		return;
+	}
+
+	removePiece(col, row)
+	{
+		var hold = null;
+		for (var i = 0; i < this.whitePieces.length; i++)
+		{
+			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
+			{
+				hold = this.whitePieces.splice(i, 1)[0];
+				this.boardState[col + 8 * row] = false;
+				return hold;
+			}
+		}
+		for (var i = 0; i < this.blackPieces.length; i++)
+		{
+			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
+			{
+				hold = this.blackPieces.splice(i, 1)[0];
+				this.boardState[col + 8 * row] = false;
+				return hold;
+			}
+		}
+		console.log("failed to remove a piece at c: " + col + " r: " + row);
+		return hold;
+	}
+
 	castleQueenside(isWhite)
 	{
 		if (isWhite)
@@ -192,53 +238,35 @@ class Board {
 		{
 			var rook = this.getPiece(7,7)
 			var king = this.getPiece(4,7)
-			this.boardState[rook.col + 8 * rook.row] = false;
-			this.boardState[king.col + 8 * king.row] = false;
-			rook.move(5, 7);
-			king.move(6, 7)
-			this.boardState[5, 7] = true;
-			this.boardState[6, 7] = true;
+			this.movePiece(rook, 5, 7)
+			this.movePiece(king, 6, 7)
 		}
 		else
 		{
 			var rook = this.getPiece(7,0)
 			var king = this.getPiece(4,0)
-			this.boardState[rook.col + 8 * rook.row] = false;
-			this.boardState[king.col + 8 * king.row] = false;
-			rook.move(5, 0);
-			king.move(6, 0)
-			this.boardState[5, 0] = true;
-			this.boardState[6, 0] = true;
+			this.movePiece(rook, 5, 0)
+			this.movePiece(king, 6, 0)
 		}
 	}
 
 	enPassantRight(col, isWhite)
 	{
-		console.log("enpcall:" + col)
-		var hold = null;
+		console.log("enpcall:" + col);
+		var pawnCaptured = null;
 		if (isWhite)
 		{
-			var pawn = this.getPiece(col,3)
-			var pawnCaptured = this.getPiece(col + 1,3)
-			console.log("enpcall:" + col)
-			this.boardState[pawn.col + 8 * pawn.row] = false;
-			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
-			hold = this.removePiece(col + 1, 3);
-			pawn.move(col + 1, 2 );
-			this.boardState[col + 1, 2] = true;
+			var pawn = this.getPiece(col,3); //get pawn to move
+			pawnCaptured = this.removePiece(col + 1, 3); //this is the pawn captures
+			this.movePiece(pawn, col + 1, 2); //move the pawn
 		}
 		else
 		{
-			console.log("enpcallb:" + col)
 			var pawn = this.getPiece(col,4)
-			var pawnCaptured = this.getPiece(col + 1,4)
-			this.boardState[pawn.col + 8 * pawn.row] = false;
-			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
-			hold = this.removePiece(col + 1, 4);
-			pawn.move(col + 1, 5 );
-			this.boardState[col + 1, 5] = true;
+			pawnCaptured = this.removePiece(col + 1,4)
+			this.movePiece(pawn, col + 1, 5)
 		}
-		return hold
+		return pawnCaptured;
 	}
 
 	undoEnPassantRight(col, isWhite, capturedPawn)
@@ -265,76 +293,25 @@ class Board {
 
 	enPassantLeft(col, isWhite)
 	{
-		var hold = null;
+		var pawnCaptured = null;
 		if (isWhite)
 		{
-			var pawn = this.getPiece(col,3)
-			var pawnCaptured = this.getPiece(col - 1,3)
-			this.boardState[pawn.col + 8 * pawn.row] = false;
-			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
-			hold = this.removePiece(col - 1, 3);
-			pawn.move(col - 1, 2 );
-			this.boardState[col - 1, 2] = true;
+			var pawn = this.getPiece(col,3);
+			pawnCaptured = this.removePiece(col - 1,3);
+			this.movePiece(pawn, col - 1, 2);
 		}
 		else
 		{
-			var pawn = this.getPiece(col,4)
-			var pawnCaptured = this.getPiece(col - 1,4)
-			this.boardState[pawn.col + 8 * pawn.row] = false;
-			this.boardState[pawnCaptured.col + 8 * pawnCaptured.row] = false;
-			hold = this.removePiece(col - 1, 4);
-			pawn.move(col - 1, 5 );
-			this.boardState[col - 1, 5] = true;
+			var pawn = this.getPiece(col,4);
+			pawnCaptured = this.removePiece(col - 1,4);
+			this.movePiece(pawn, col - 1, 5);
 		}
-		return hold;
+		return pawnCaptured;
 	}
 
 	squareOccupied(col, row)
 	{
 		return this.boardState[col + row * 8];
-	}
-
-	getPiece(col, row)
-	{
-		for (var i = 0; i < this.whitePieces.length; i++)
-		{
-			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
-			{
-				return this.whitePieces[i];
-			}
-		}
-		for (var i = 0; i < this.blackPieces.length; i++)
-		{
-			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
-			{
-				return this.blackPieces[i];
-			}
-		}
-		return;
-	}
-
-	removePiece(col, row)
-	{
-		var hold = null;
-		for (var i = 0; i < this.whitePieces.length; i++)
-		{
-			if( this.whitePieces[i].col == col && this.whitePieces[i].row == row )
-			{
-				hold = this.whitePieces.splice(i, 1)[0];
-				this.boardState[col + 8 * row] = false;
-				return hold;
-			}
-		}
-		for (var i = 0; i < this.blackPieces.length; i++)
-		{
-			if( this.blackPieces[i].col == col && this.blackPieces[i].row == row )
-			{
-				hold = this.blackPieces.splice(i, 1)[0];
-				this.boardState[col + 8 * row] = false;
-				return hold;
-			}
-		}
-		return hold;
 	}
 
 	attemptMove(p, col, row)
