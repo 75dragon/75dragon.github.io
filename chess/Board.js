@@ -250,6 +250,7 @@ class Board {
 		{
 			this.enPassPossible = false;
 		}
+		this.whitesTurn = !this.whitesTurn;
 	}
 
 	castleKingside(isWhite)
@@ -276,6 +277,7 @@ class Board {
 		{
 			this.enPassPossible = false;
 		}
+		this.whitesTurn = !this.whitesTurn;
 	}
 
 	enPassantRight(col, isWhite)
