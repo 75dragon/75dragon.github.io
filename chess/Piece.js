@@ -676,11 +676,22 @@ class Pawn extends Piece
 		if (r >= 0 && r <= 7 && !board.squareOccupied(c, r))
 		{
 			moves[c + 8 * r] = true;
+			if (this.isWhite && r == 0)
+			{
+				moves[c + 8 * r] = "promote"
+			}
+			else if (this.isWhite && r == 7)
+			{
+				moves[c + 8 * r] = "promote"
+			}
 		}
 		c = this.col;
 		r = this.row + direction * 2;
 		if (this.hasNotMoved && r >= 0 && r <= 7 && !board.squareOccupied(c, r))
 		{
+			board.doublePawnPush = this.col;
+			board.enPassDelay = true;
+			board.enPassPossible = true;
 			moves[c + 8 * r] = true;
 		}
 		c = this.col - 1;
@@ -688,12 +699,28 @@ class Pawn extends Piece
 		if (c >= 0 && c <= 7 && r >= 0 && r <= 7 && board.squareOccupied(c, r) && (board.getPiece(c, r).isWhite != this.isWhite))
 		{
 			moves[c + 8 * r] = true;
+			if (this.isWhite && r == 0)
+			{
+				moves[c + 8 * r] = "promote"
+			}
+			else if (this.isWhite && r == 7)
+			{
+				moves[c + 8 * r] = "promote"
+			}
 		}
 		c = this.col + 1;
 		r = this.row + direction;
 		if (c >= 0 && c <= 7 && r >= 0 && r <= 7 && board.squareOccupied(c, r) && (board.getPiece(c, r).isWhite != this.isWhite))
 		{
 			moves[c + 8 * r] = true;
+			if (this.isWhite && r == 0)
+			{
+				moves[c + 8 * r] = "promote"
+			}
+			else if (this.isWhite && r == 7)
+			{
+				moves[c + 8 * r] = "promote"
+			}
 		}
 
 		//enpassant
@@ -702,14 +729,14 @@ class Pawn extends Piece
 			console.log("en passant opportunity attempt")
 			//right side
 			//check if right col exists, is right row, pawn enemy color next to it, space behind is clear
-			if (this.col < 7 && this.row == 3 && board.squareOccupied(this.col + 1, this.row) && board.getPiece(this.col + 1, this.row).letter == "P" && board.getPiece(this.col + 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col + 1, this.row - 1))
+			if (board.enPassPossible && this.col < 7 && this.row == 3 && board.squareOccupied(this.col + 1, this.row) && board.getPiece(this.col + 1, this.row).letter == "P" && board.getPiece(this.col + 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col + 1, this.row - 1) && board.doublePawnPush == this.col + 1)
 			{
 				console.log("en passant opportunity right")
 				moves[this.col + 1 + 8 * (this.row - 1)] = "En Passant Right"
 			}
 			//right side
 			//check if right col exists, is right row, pawn enemy color next to it, space behind is clear
-			if (this.col > 0 && this.row == 3 && board.squareOccupied(this.col - 1, this.row) && board.getPiece(this.col - 1, this.row).letter == "P" && board.getPiece(this.col - 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col - 1, this.row - 1))
+			if (board.enPassPossible && this.col > 0 && this.row == 3 && board.squareOccupied(this.col - 1, this.row) && board.getPiece(this.col - 1, this.row).letter == "P" && board.getPiece(this.col - 1, this.row).isWhite != this.isWhite && !board.squareOccupied(this.col - 1, this.row - 1) && board.doublePawnPush == this.col - 1)
 			{
 				console.log("en passant opportunity left")
 				moves[this.col - 1 + 8 * (this.row - 1)] = "En Passant Left"

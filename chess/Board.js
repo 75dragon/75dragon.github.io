@@ -13,6 +13,11 @@ class Board {
 		this.setBoard();
 		this.whitesTurn = true;
 		this.moveLog = [];
+		this.enPassantRightCol = -1;
+		this.enPassantLeftCol = 1;
+		this.doublePawnPush = -1;
+		this.enPassDelay = false;
+		this.enPassPossible = false;
 	}
 
 	colToChar(col)
@@ -237,6 +242,14 @@ class Board {
 			this.movePiece(rook, 3, 0)
 			this.movePiece(king, 2, 0)
 		}
+		if (this.enPassDelay)
+		{
+			this.enPassDelay = false;
+		}
+		else if (this.enPassPossible)
+		{
+			this.enPassPossible = false;
+		}
 	}
 
 	castleKingside(isWhite)
@@ -254,6 +267,14 @@ class Board {
 			var king = this.getPiece(4,0)
 			this.movePiece(rook, 5, 0)
 			this.movePiece(king, 6, 0)
+		}
+		if (this.enPassDelay)
+		{
+			this.enPassDelay = false;
+		}
+		else if (this.enPassPossible)
+		{
+			this.enPassPossible = false;
 		}
 	}
 
@@ -312,6 +333,24 @@ class Board {
 		return pawnCaptured;
 	}
 
+	undoEnPassantLeft(col, isWhite, capturedPawn)
+	{
+		console.log("reverseEnPassant" + col)
+		var hold = null;
+		if (isWhite)
+		{
+			var pawn = this.getPiece(col - 1, 2)
+			this.movePiece(pawn, col, 3)
+			this.placePiece(capturedPawn)
+		}
+		else
+		{
+			var pawn = this.getPiece(col - 1, 5)
+			this.movePiece(pawn, col, 4)
+			this.placePiece(capturedPawn)
+		}
+	}
+
 	squareOccupied(col, row)
 	{
 		return this.boardState[col + row * 8];
@@ -320,11 +359,12 @@ class Board {
 	attemptMove(p, col, row)
 	{
 		console.log("----------------moveattempt------------")
-		var moveText = p.letter + this.colToChar(p.col) + (8 - p.row )
+		var moveText = p.letter + this.colToChar(p.col) + (8 - p.row );
 		var arr = p.moves(this);
 		var capture = false;
 		var previousCol = p.col;
 		var previousRow = p.row;
+		var capturedPiece = null;
 
 		if (p.isWhite != this.whitesTurn)
 		{
@@ -343,20 +383,32 @@ class Board {
 		}
 		else if (arr[col + 8 * row] == "En Passant Right")
 		{
-			console.log("enPassantRight")
-			this.enPassantRight(col - 1, this.whitesTurn)
-			return;
+			console.log("enPassantRight");
+			capturedPiece = this.enPassantRight(col - 1, this.whitesTurn);
+			capture = true;
 		}
 		else if (arr[col + 8 * row] == "En Passant Left")
 		{
-			console.log("enPassantLeft")
-			this.enPassantLeft(col + 1, this.whitesTurn)
-			return;
+			console.log("enPassantLeft");
+			capturedPiece = this.enPassantLeft(col + 1, this.whitesTurn);
+			capture = true;
 		}
 		else if (arr[col + 8 * row])
 		{
 			console.log("legal move")
 			//console.log(arr)
+			capturedPiece = this.movePiece(p, col, row);
+			if (capturedPiece == null) //no piece captured
+			{
+				console.log("no piece captured.");
+				moveText = moveText + this.colToChar(col) + (8 - row);
+			}
+			else
+			{
+				capture = true;
+				console.log("piece captured!")
+				moveText = moveText + "x" + capturedPiece.letter + this.colToChar(col) + (8 - row);
+			}
 		}
 		else
 		{
@@ -365,18 +417,6 @@ class Board {
 			return;
 		}
 
-		var capturedPiece = this.movePiece(p, col, row);
-		if (capturedPiece == null) //no piece captured
-		{
-			console.log("no piece captured.");
-			moveText = moveText + this.colToChar(col) + (8 - row);
-		}
-		else
-		{
-			capture = true;
-			console.log("piece captured!")
-			moveText = moveText + "x" + capturedPiece.letter + this.colToChar(col) + (8 - row);
-		}
 		if (this.whitesTurn)
 		{
 			console.log("check if white king would be in check");
@@ -426,11 +466,30 @@ class Board {
 				console.log("CHECK")
 			}
 		}
-
+		if (this.enPassDelay)
+		{
+			this.enPassDelay = false;
+		}
+		else if (this.enPassPossible)
+		{
+			this.enPassPossible = false;
+		}
 		console.log(moveText)
 		this.moveLog.push(moveText);
-		console.log(this.moveLog)
+		console.log(this.moveLog);
 		p.hasNotMoved = false;
+		if (arr[col + 8 * row] == "promote")
+		{
+			this.removePiece(col, row);
+			if (this.whitesTurn)
+			{
+				this.placePiece(new Queen(col, row, true, this.pieceImages[8]));
+			}
+			else
+			{
+				this.placePiece(new Queen(col, row, false, this.pieceImages[8]));
+			}
+		}
 		this.whitesTurn = !this.whitesTurn;
 	}
 
