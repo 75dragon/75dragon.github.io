@@ -242,15 +242,6 @@ class Board {
 			this.movePiece(rook, 3, 0)
 			this.movePiece(king, 2, 0)
 		}
-		if (this.enPassDelay)
-		{
-			this.enPassDelay = false;
-		}
-		else if (this.enPassPossible)
-		{
-			this.enPassPossible = false;
-		}
-		this.whitesTurn = !this.whitesTurn;
 	}
 
 	castleKingside(isWhite)
@@ -269,15 +260,6 @@ class Board {
 			this.movePiece(rook, 5, 0)
 			this.movePiece(king, 6, 0)
 		}
-		if (this.enPassDelay)
-		{
-			this.enPassDelay = false;
-		}
-		else if (this.enPassPossible)
-		{
-			this.enPassPossible = false;
-		}
-		this.whitesTurn = !this.whitesTurn;
 	}
 
 	enPassantRight(col, isWhite)
@@ -358,6 +340,39 @@ class Board {
 		return this.boardState[col + row * 8];
 	}
 
+	//check if its a legal position after a move
+	legalPosition(isWhite)
+	{
+		if(isWhite)
+		{
+			// if the white king is still attacked by black piece, return false
+			if (this.squareAttacked(this.getKingSquare(true), false))
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (this.squareAttacked(this.getKingSquare(false), true))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//takes a move in text and a color and does that move
+	textMove(text, isWhite)
+	{
+		if (text == "0-0")
+		{
+			if (isWhite)
+			{
+
+			}
+		}
+	}
+
 	attemptMove(p, col, row)
 	{
 		console.log("----------------moveattempt------------")
@@ -376,24 +391,28 @@ class Board {
 		if (arr[col + 8 * row] == "CastleKingside")
 		{
 			this.castleKingside(this.whitesTurn);
-			return;
+			moveText = "0-0";
+			//return;
 		}
 		else if (arr[col + 8 * row] == "CastleQueenside")
 		{
 			this.castleQueenside(this.whitesTurn);
-			return;
+			moveText = "0-0-0";
+			//return;
 		}
 		else if (arr[col + 8 * row] == "En Passant Right")
 		{
 			console.log("enPassantRight");
 			capturedPiece = this.enPassantRight(col - 1, this.whitesTurn);
 			capture = true;
+			moveText = moveText + "x" + capturedPiece.letter + this.colToChar(col) + (8 - row) + " " + "EP";
 		}
 		else if (arr[col + 8 * row] == "En Passant Left")
 		{
 			console.log("enPassantLeft");
 			capturedPiece = this.enPassantLeft(col + 1, this.whitesTurn);
 			capture = true;
+			moveText = moveText + "x" + capturedPiece.letter + this.colToChar(col) + (8 - row) + " " + "EP";
 		}
 		else if (arr[col + 8 * row])
 		{
